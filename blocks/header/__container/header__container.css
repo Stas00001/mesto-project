@@ -1,0 +1,12 @@
+.header__container {
+  max-width: 880px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 0 0 41px 0;
+  border-bottom: 1px solid #545454;
+}
+@media screen and (max-width: 320px) {
+  .header__container {
+    max-width: calc(100% - 38px);
+  }
+}

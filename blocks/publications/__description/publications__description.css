@@ -1,0 +1,6 @@
+.publications__description {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 21px;
+  align-items: center;
+}

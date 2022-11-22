@@ -1,0 +1,14 @@
+.publications__card {
+  min-width: 282px;
+  min-height: 361px;
+  border-radius: 2%;
+  background-color: #ffffff;
+}
+
+@media screen and (max-width: 320px) {
+  .publications__card {
+    max-width: calc(100% - 38px);
+    height: 361px;
+    margin: 0 auto;
+  }
+}

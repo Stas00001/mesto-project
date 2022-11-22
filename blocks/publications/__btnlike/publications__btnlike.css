@@ -1,0 +1,12 @@
+.publications__btnlike {
+  min-width: 22px;
+  height: 19px;
+  border: none;
+  cursor: pointer;
+  background: url("../../../images/heart.svg") center no-repeat;
+  background-size: contain;
+}
+.publications__btnlike:hover {
+  opacity: 0.6;
+  transition: opacity 0.3s linear;
+}

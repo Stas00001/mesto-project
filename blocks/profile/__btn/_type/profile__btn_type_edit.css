@@ -1,0 +1,7 @@
+.profile__btn_type_edit {
+  width: 24px;
+  height: 24px;
+  border: 1px solid #FFFFFF;
+  background: url("../../../../images/editbtn.svg") 50% no-repeat;
+  cursor: pointer;
+}
