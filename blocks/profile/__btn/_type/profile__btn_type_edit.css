@@ -5,3 +5,10 @@
   background: url("../../../../images/editbtn.svg") 50% no-repeat;
   cursor: pointer;
 }
+
+@media screen and (max-width: 320px) {
+  .profile__btn_type_edit {
+    width: 18px;
+    height: 18px;
+  }
+}

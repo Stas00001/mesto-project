@@ -20,3 +20,9 @@
     max-width: calc(100% - 38px);
   }
 }
+
+@media screen and (max-width: 320px) {
+  .page__container {
+    max-width: 100%;
+  }
+}

@@ -15,8 +15,9 @@
 }
 
 @media screen and (max-width: 425px) {
-  .popup__btn_type_save {
+  .popup__save-btn {
     font-size: 14px;
     line-height: 17px;
+    
   }
 }
