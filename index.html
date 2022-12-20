@@ -18,70 +18,48 @@
           <div class="profile__info">
             <div class="profile__items">
               <h1 class="profile__name">Жак-Ив Кусто </h1>
-              <button class="profile__btn profile__btn_type_edit popup-open" type="button" name="button">
+              <button class="profile__btn profile__btn_type_edit " type="button" name="button">
 
               </button>
             </div>
             <p class="profile__about">Исследователь океана</p>
           </div>
-          <button class="profile__btn profile__btn_type_add popup-open" type="button" name="button"></button>
+          <button class="profile__btn profile__btn_type_add" type="button" name="button"></button>
         </div>
       </section>
       <section class="publications">
-        <div class="publications__card">
-          <img class="publications__image" src="./images/karachayevsk.jpg" alt="Карачаевск">
-          <div class="publications__description">
-            <h2 class="publications__title">Карачаевск</h2>
-            <button class="publications__btnlike" type="button" name="button"></button>
+        <template id="cards">
+          <div class="publications__card">
+            <a href="#"><img class="publications__image" src="" alt=""></a>
+            <div class="publications__description">
+              <h2 class="publications__title"></h2>
+              <button class="publications__btnlike" type="button" name="button"></button>
+            </div>
           </div>
-        </div>
-        <div class="publications__card">
-          <img class="publications__image" src="./images/elbrus.jpg" alt="Эльбрус">
-          <div class="publications__description">
-            <h2 class="publications__title">Гора Эльбрус</h2>
-            <button class="publications__btnlike" type="button" name="button"></button>
-          </div>
-        </div>
-        <div class="publications__card">
-          <img class="publications__image" src="./images/dombay.jpg" alt="Домбай">
-          <div class="publications__description">
-            <h2 class="publications__title">Домбай</h2>
-            <button class="publications__btnlike" type="button" name="button"></button>
-          </div>
-        </div>
-        <div class="publications__card">
-          <img class="publications__image" src="./images/elbrus.jpg" alt="Эльбрус">
-          <div class="publications__description">
-            <h2 class="publications__title">Гора Эльбрус</h2>
-            <button class="publications__btnlike" type="button" name="button"></button>
-          </div>
-        </div>
-        <div class="publications__card">
-          <img class="publications__image" src="./images/dombay.jpg" alt="Домбай">
-          <div class="publications__description">
-            <h2 class="publications__title">Домбай</h2>
-            <button class="publications__btnlike" type="button" name="button"></button>
-          </div>
-        </div>
-        <div class="publications__card">
-          <img class="publications__image" src="./images/karachayevsk.jpg" alt="Карачаево-Черкесия">
-          <div class="publications__description">
-            <h2 class="publications__title">Карачаево-Черкесия</h2>
-            <button class="publications__btnlike" type="button" name="button"></button>
-          </div>
-        </div>
+      </template>
       </section>
     </main>
     <footer class="footer">
       <p class="footer__copyright">© 2022 Mesto Russia</p>
     </footer>
-    <div class="popup" id='popup' >
+    <div class="popup" id="popup_profile">
         <div class="popup__body">
           <form class="popup__form" name="popup">
             <h2 class="popup__title">Редактировать профиль</h2>
                 <input class="popup__input"  type="text" name="name" placeholder="Имя" >
                 <input class="popup__input" type="text" name="job" placeholder="Статус">
               <button class="popup__save-btn" type="submit" name="button">Сохранить</button>
+          </form>
+          <button class="popup__close-btn" type="button" name="button"></button>
+        </div>
+    </div>
+    <div class="popup" id='popup_add'>
+        <div class="popup__body">
+          <form class="popup__form" name="cards">
+            <h2 class="popup__title">Новое место</h2>
+                <input class="popup__input"  type="text" name="nameCard" placeholder="Название" >
+                <input class="popup__input" type="text" name="images" placeholder="Ссылка на картинку">
+              <button class="popup__save-btn" type="submit" name="button">Создать</button>
           </form>
           <button class="popup__close-btn" type="button" name="button"></button>
         </div>

@@ -16,6 +16,7 @@
 @import url(../blocks/profile/__name/profile__name.css);
 @import url(../blocks/publications/publications.css);
 @import url(../blocks/publications/__btnlike/publications__btnlike.css);
+@import url(../blocks/publications/__btnlike/_active/publications__btnlike_active.css);
 @import url(../blocks/publications/__card/publications__card.css);
 @import url(../blocks/publications/__description/publications__description.css);
 @import url(../blocks/publications/__image/publications__image.css);
