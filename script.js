@@ -9,7 +9,7 @@ const popupBtnClose = document.querySelectorAll('.popup__close-btn');
 const btnSave = document.querySelector('.popup__save-btn');
 const popupProfile = document.getElementById('popup_profile');
 const popupAddCard = document.getElementById('popup_add');
-
+const deleteBtn = document.querySelector('.publications__btndelete');
 const initialCards = [
   {
     name: 'Архыз',
@@ -104,6 +104,7 @@ function addCards (namaValue, imageValue) {
   card.querySelector('.publications__btnlike').addEventListener('click', function (evt) {
     evt.target.classList.toggle('publications__btnlike_active');
   });
+
   card.querySelector('.popup-link').addEventListener('click', function (evt) {
     card.querySelector('.popup-link').addEventListener('click', function (evt) {
       const cardImageValue = document.querySelector('.card-image').src = imageValue;
@@ -112,9 +113,15 @@ function addCards (namaValue, imageValue) {
     });
     popupImage.classList.add('popup_opened');
   });
+  card.querySelector('.publications__btndelete').addEventListener('click', deleteCard);
   publications.prepend(card);
 }
-
+function deleteCard() {
+  const publicationsCard = document.querySelectorAll('.publications__card');
+  for (let i = 0; i < publicationsCard.length; i++) {
+    publicationsCard[0].remove();
+  }
+};
 function handleFormSubmitCards(evt) {
     evt.preventDefault();
     const nameCard  = document.querySelector('.popup__input[name="nameCard"]');
@@ -138,6 +145,7 @@ initialCards.forEach((item) => {
     const popupText = document.querySelector('.popup__image_text').textContent = item.name;
     popupImage.classList.add('popup_opened');
   });
-  publications.append(card);
 
-});
+  card.querySelector('.publications__btndelete').addEventListener('click', deleteCard);
+  publications.append(card);
+  });
