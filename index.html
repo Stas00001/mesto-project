@@ -30,10 +30,12 @@
       <section class="publications">
         <template id="cards">
           <div class="publications__card">
-            <a href="#"><img class="publications__image" src="" alt=""></a>
+            <a href="#popup_image" class="popup-link"><img class="publications__image" src="" alt=""><a>
             <div class="publications__description">
               <h2 class="publications__title"></h2>
               <button class="publications__btnlike" type="button" name="button"></button>
+              <button class="publications__btndelete" type="button" name="button"></button>
+
             </div>
           </div>
       </template>
@@ -61,6 +63,13 @@
                 <input class="popup__input" type="text" name="images" placeholder="Ссылка на картинку">
               <button class="popup__save-btn" type="submit" name="button">Создать</button>
           </form>
+          <button class="popup__close-btn" type="button" name="button"></button>
+        </div>
+    </div>
+    <div class="popup" id='popup_image'>
+        <div class="popup__body popup__body_image">
+          <img class="popup__images card-image" src="" alt="">
+          <p class="popup__image_text"></p>
           <button class="popup__close-btn" type="button" name="button"></button>
         </div>
     </div>

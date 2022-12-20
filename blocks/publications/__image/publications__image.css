@@ -10,4 +10,6 @@
   object-position: center;
   border-top-left-radius: 2%;
   border-top-right-radius: 2%;
+  filter: brightness(80%);
+
 }
