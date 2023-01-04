@@ -1,14 +1,9 @@
 const profile = document.querySelector('.profile');
-const profileBtn = document.querySelector('.profile__btn');
 const publications = document.querySelector('.publications');
-const openPopupProfile = document.querySelectorAll('.profile__btn_type_edit');
-const openpopupAddCard = document.querySelectorAll('.profile__btn_type_add');
-const openPopupImage = document.querySelectorAll('.popup-link');
+const btnOpenPopup = document.querySelectorAll('.popup-link');
 const popupImage = document.getElementById('popup_image')
-const popupBtnClose = document.querySelectorAll('.popup__close-btn');
-const btnSave = document.querySelector('.popup__save-btn');
+const btnClosePopup = document.querySelectorAll('.popup__close');
 const popupProfile = document.getElementById('popup_profile');
-const popupAddCard = document.getElementById('popup_add');
 const deleteBtn = document.querySelector('.publications__btndelete');
 const initialCards = [
   {
@@ -36,42 +31,32 @@ const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
+if (btnOpenPopup.length > 0) {
+  for(let index = 0; index < btnOpenPopup.length; index++){
+    const popupBtn = btnOpenPopup[index];
+    popupBtn.addEventListener('click', function (evt) {
+      const popupName = popupBtn.getAttribute('name', 'href').replace('#', ' ');
+      const curentPopup = document.getElementById(popupName);
+      popupOpen(curentPopup);
+    });
+  }
+}
+if (btnClosePopup.length > 0) {
+  for (let index = 0; index < btnClosePopup.length; index++){
+    const element = btnClosePopup[index];
+    element.addEventListener('click', function (evt) {
+      popupClose(element.closest('.popup'));
+    });
+  }
+}
 
-openPopupImage.forEach((button) => {
-    button.addEventListener('click', (e) => {
-        e.preventDefault()
-        popupImage.classList.add('popup_opened');
-        console.log(e);
-    })
-});
-
-openPopupProfile.forEach((button) => {
-    button.addEventListener('click', (e) => {
-        e.preventDefault();
-        popupProfile.classList.add('popup_opened');
-    })
-});
-
-
-
-popupBtnClose.forEach((button) => {
-  button.addEventListener('click', (e) =>{
-    e.preventDefault();
-    popupProfile.classList.remove('popup_opened');
-    popupAddCard.classList.remove('popup_opened');
-    popupImage.classList.remove('popup_opened');
-  })
-});
-
-openpopupAddCard.forEach((button) => {
-    button.addEventListener('click', (e) => {
-        e.preventDefault();
-        popupAddCard.classList.add('popup_opened');
-    })
-});
-
-
-
+function popupOpen(curentPopup) {
+  const popupActive = document.querySelector('.popup.popup_opened');
+  curentPopup.classList.add('popup_opened');
+}
+function popupClose(popupActive) {
+  popupActive.classList.remove('popup_opened');
+}
 
 const formElement = document.querySelector('.popup__form');
 const nameInput = document.querySelector('.popup__input[name="name"]');
@@ -88,64 +73,98 @@ function handleFormSubmit(evt) {
 
     nameProfile.textContent = nameInputValue;
     aboutProfile.textContent = jobInputValue;
-    popupProfile.classList.remove('popup_opened');
 
 }
+
 
 formElement.addEventListener('submit', handleFormSubmit);
 
-const cardsForm = document.querySelector('.popup__form[name="cards"]');
+const formCards = document.querySelector('.popup__form[name="cards"]');
+const cardsTemplate = document.querySelector('#cards').content;
+const card = cardsTemplate.querySelector('.publications__card').cloneNode(true);
+const linkPopupImage = card.querySelector('.popup-link');
 
-function addCards (namaValue, imageValue) {
+function createCard(newCard) {
   const cardsTemplate = document.querySelector('#cards').content;
   const card = cardsTemplate.querySelector('.publications__card').cloneNode(true);
-  card.querySelector('.publications__title').textContent = namaValue;
-  card.querySelector('.publications__image').src = imageValue;
-  card.querySelector('.publications__btnlike').addEventListener('click', function (evt) {
-    evt.target.classList.toggle('publications__btnlike_active');
-  });
 
-  card.querySelector('.popup-link').addEventListener('click', function (evt) {
+    card.querySelector('.publications__title').textContent = newCard.text;
+    card.querySelector('.publications__image').src = newCard.image;
+    card.querySelector('.publications__image').alt = newCard.text;
+    card.querySelector('.publications__btnlike').addEventListener('click', function (evt) {
+      evt.target.classList.toggle('publications__btnlike_active');
+    });
     card.querySelector('.popup-link').addEventListener('click', function (evt) {
-      const cardImageValue = document.querySelector('.card-image').src = imageValue;
-      const popupTextValue = document.querySelector('.popup__text').textContent = namaValue;
+      evt.preventDefault();
+      const cardImage = document.querySelector('.card-image').src = newCard.image;
+      const popupText = document.querySelector('.popup__text').textContent = newCard.text;
+      const cardImageAlt = document.querySelector('.card-image').alt = newCard.text;
+
       popupImage.classList.add('popup_opened');
     });
-    popupImage.classList.add('popup_opened');
-  });
-  card.querySelector('.publications__btndelete').addEventListener('click', deleteCard);
-  publications.prepend(card);
-}
-function deleteCard() {
-  const publicationsCard = document.querySelectorAll('.publications__card');
-  for (let i = 0; i < publicationsCard.length; i++) {
-    publicationsCard[0].remove();
-  }
-};
-function handleFormSubmitCards(evt) {
-    evt.preventDefault();
-    const nameCard  = document.querySelector('.popup__input[name="nameCard"]');
-    const imageCard  = document.querySelector('.popup__input[name="images"]');
-    addCards(nameCard.value, imageCard.value);
-    popupAddCard.classList.remove('popup_opened');
+    const buttonDeleteCard = card.querySelectorAll('.publications__btndelete');
+    const publicationsCards = document.querySelectorAll('.publications__card');
+
+    function handler(evt) {
+         evt.target.parentNode.parentNode.removeChild(evt.target.parentNode);
+    }
+
+    function deleteItem(buttonDelete, childcards) {
+      for (let i=0; i < buttonDelete.length; i++) {
+        buttonDelete[i].addEventListener('click', handler);
+      }
+    }
+
+    deleteItem(buttonDeleteCard, publicationsCards);
+    return card;
 
 }
-cardsForm.addEventListener('submit', handleFormSubmitCards);
+
+function handleFormSubmitAddCard(evt) {
+  evt.preventDefault()
+  const newCard = {};
+   newCard.text = formCards.querySelector('.popup__input[name="nameCards"]').value;
+   newCard.image = formCards.querySelector('.popup__input[name="imageCards"]').value;
+  publications.prepend(createCard(newCard));
+
+}
+
+
+formCards.addEventListener('submit', handleFormSubmitAddCard);
+
 
 initialCards.forEach((item) => {
   const cardsTemplate = document.querySelector('#cards').content;
   const card = cardsTemplate.querySelector('.publications__card').cloneNode(true);
   card.querySelector('.publications__title').textContent = item.name;
   card.querySelector('.publications__image').src = item.link;
+  card.querySelector('.publications__image').alt = item.name;
+
   card.querySelector('.publications__btnlike').addEventListener('click', function (evt) {
     evt.target.classList.toggle('publications__btnlike_active');
   });
   card.querySelector('.popup-link').addEventListener('click', function (evt) {
+    evt.preventDefault();
     const cardImage = document.querySelector('.card-image').src = item.link;
     const popupText = document.querySelector('.popup__text').textContent = item.name;
+    const cardImageAlt = document.querySelector('.card-image').alt = item.name;
+
     popupImage.classList.add('popup_opened');
   });
+  const buttonDeleteCard = card.querySelectorAll('.publications__btndelete');
+  const publicationsCards = document.querySelectorAll('.publications__card');
 
-  card.querySelector('.publications__btndelete').addEventListener('click', deleteCard);
+  function handler(evt) {
+       evt.target.parentNode.parentNode.removeChild(evt.target.parentNode);
+  }
+
+  function deleteItem(buttonDelete, childcards) {
+    for (let i=0; i < buttonDelete.length; i++) {
+      buttonDelete[i].addEventListener('click', handler);
+    }
+  }
+
+  deleteItem(buttonDeleteCard, publicationsCards);
+
   publications.append(card);
-  });
+});

@@ -8,6 +8,7 @@
   position: absolute;
   top: 20px;
   right: 20px;
+  z-index: 1;
   }
 
   .publications__btndelete:hover {

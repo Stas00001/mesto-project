@@ -18,23 +18,24 @@
           <div class="profile__info">
             <div class="profile__items">
               <h1 class="profile__name">Жак-Ив Кусто </h1>
-              <button class="profile__btn profile__btn_type_edit " type="button" name="button">
+              <button class="profile__btn profile__btn_type_edit popup-link " type="button" name="popup_profile">
 
               </button>
             </div>
             <p class="profile__about">Исследователь океана</p>
           </div>
-          <button class="profile__btn profile__btn_type_add" type="button" name="button"></button>
+          <button class="profile__btn profile__btn_type_add popup-link" type="button" name="popup_add"></button>
         </div>
       </section>
       <section class="publications">
         <template id="cards">
           <div class="publications__card">
-            <a href="#popup_image" class="popup-link"><img class="publications__image" src="" alt=""><a>
+            <button class="publications__btndelete" type="button" name="button"></button>
+
+            <a href="#popup_image" name="popup_image" class="popup-link"><img class="publications__image" src="" alt=""><a>
             <div class="publications__description">
               <h2 class="publications__title"></h2>
               <button class="publications__btnlike" type="button" name="button"></button>
-              <button class="publications__btndelete" type="button" name="button"></button>
             </div>
           </div>
       </template>
@@ -49,27 +50,27 @@
             <h2 class="popup__title">Редактировать профиль</h2>
                 <input class="popup__input"  type="text" name="name" placeholder="Имя" >
                 <input class="popup__input" type="text" name="job" placeholder="Статус">
-              <button class="popup__save-btn" type="submit" name="button">Сохранить</button>
+              <button class="popup__save-btn popup__close" type="submit" name="button">Сохранить</button>
           </form>
-          <button class="popup__close-btn" type="button" name="button"></button>
+          <button class="popup__close-btn popup__close" type="button" name="button"></button>
         </div>
     </div>
     <div class="popup" id='popup_add'>
         <div class="popup__body">
           <form class="popup__form" name="cards">
             <h2 class="popup__title">Новое место</h2>
-                <input class="popup__input"  type="text" name="nameCard" placeholder="Название" >
-                <input class="popup__input" type="text" name="images" placeholder="Ссылка на картинку">
-              <button class="popup__save-btn" type="submit" name="button">Создать</button>
+                <input class="popup__input"  type="text" name="nameCards" placeholder="Название" >
+                <input class="popup__input" type="text" name="imageCards" placeholder="Ссылка на картинку">
+              <button class="popup__save-btn popup__close" type="submit" name="button">Создать</button>
           </form>
-          <button class="popup__close-btn" type="button" name="button"></button>
+          <button class="popup__close-btn popup__close" type="button" name="button"></button>
         </div>
     </div>
     <div class="popup" id='popup_image'>
         <div class="popup__body popup__body_image">
           <img class="popup__images card-image" src="" alt="">
           <p class="popup__text"></p>
-          <button class="popup__close-btn" type="button" name="button"></button>
+          <button class="popup__close-btn popup__close" type="button" name="button"></button>
         </div>
     </div>
   </div>
