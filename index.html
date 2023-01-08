@@ -18,21 +18,20 @@
           <div class="profile__info">
             <div class="profile__items">
               <h1 class="profile__name">Жак-Ив Кусто </h1>
-              <button class="profile__btn profile__btn_type_edit popup-link " type="button" name="popup_profile">
+              <button class="profile__btn profile__btn_type_edit popup-open " type="button" name="popup_profile">
 
               </button>
             </div>
             <p class="profile__about">Исследователь океана</p>
           </div>
-          <button class="profile__btn profile__btn_type_add popup-link" type="button" name="popup_add"></button>
+          <button class="profile__btn profile__btn_type_add popup-open" type="button" name="popup_add"></button>
         </div>
       </section>
       <section class="publications">
         <template id="cards">
           <div class="publications__card">
             <button class="publications__btndelete" type="button" name="button"></button>
-
-            <a href="#popup_image" name="popup_image" class="popup-link"><img class="publications__image" src="" alt=""><a>
+            <a href="#popup_image" name="popup_image" class="popup-open"><img class="publications__image" src="" alt=""><a>
             <div class="publications__description">
               <h2 class="publications__title"></h2>
               <button class="publications__btnlike" type="button" name="button"></button>
@@ -66,9 +65,9 @@
           <button class="popup__close-btn popup__close" type="button" name="button"></button>
         </div>
     </div>
-    <div class="popup" id='popup_image'>
+    <div class="popup popup_image" id='popup_image'>
         <div class="popup__body popup__body_image">
-          <img class="popup__images card-image" src="" alt="">
+          <img class="popup__images" src="" alt="">
           <p class="popup__text"></p>
           <button class="popup__close-btn popup__close" type="button" name="button"></button>
         </div>

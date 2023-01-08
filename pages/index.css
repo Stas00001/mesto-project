@@ -24,6 +24,7 @@
 @import url(../blocks/publications/__title/publications__title.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
 @import url(../blocks/popup/popup.css);
+@import url(../blocks/popup/_image/popup_image.css);
 @import url(../blocks/popup/__body/popup__body.css);
 @import url(../blocks/popup/__body/_image/popup__body_image.css);
 @import url(../blocks/popup/__images/popup__images.css);
