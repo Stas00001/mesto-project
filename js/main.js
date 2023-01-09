@@ -2,13 +2,16 @@ const profile = document.querySelector('.profile');
 const publications = document.querySelector('.publications');
 const buttonsOpenPopup = document.querySelectorAll('.popup-open');
 const popupImage = document.getElementById('popup_image')
-const buttonsClosePopup = document.querySelectorAll('.popup__close');
+const buttonsClosePopup = document.querySelectorAll('.popup__close-btn');
+const buttonsSavePopup = document.querySelectorAll('.popup__save-btn');
 const popupProfile = document.getElementById('popup_profile');
 const deleteBtn = document.querySelector('.publications__btndelete');
 const popup = document.querySelector('.popup');
+const addCardPopup = document.getElementById('popup_add');
 const popupCardImage = document.querySelector('.popup__images');
 const popupText = document.querySelector('.popup__text');
-
+const btnEditProfile = document.querySelector('.profile__btn_type_edit');
+const btnAddCard = document.querySelector('.profile__btn_type_add');
 const initialCards = [
   {
     name: 'Архыз',
@@ -36,30 +39,29 @@ const initialCards = [
   }
 ];
 
-    buttonsOpenPopup.forEach((button) => {
-      button.addEventListener('click', function (evt) {
-        const popupName = button.getAttribute('name', 'href').replace('#', ' ');
-        const curentPopup = document.getElementById(popupName);
-        popupOpen(curentPopup);
-      })
-
-    });
-
-    buttonsClosePopup.forEach((button) => {
-      button.addEventListener('click',() => {
-        const popupActive = document.querySelector('.popup.popup_opened');
-        popupClose(popupActive);
-    })
-});
 
 
 function popupOpen(curentPopup) {
-  curentPopup.classList.add('popup_opened');
+    curentPopup.classList.add('popup_opened');
 }
-function popupClose(popupActive) {
-  popupActive.classList.remove('popup_opened');
-}
+function popupClose(curentPopup) {
+      curentPopup.classList.remove('popup_opened');
 
+};
+
+buttonsClosePopup.forEach(button => {
+  button.addEventListener('click', function(evt) {
+    popupClose(evt.currentTarget.closest('.popup'));
+  })
+})
+
+
+btnAddCard.addEventListener('click', function (evt) {
+  popupOpen(addCardPopup);
+});
+btnEditProfile.addEventListener('click', function (evt) {
+  popupOpen(popupProfile);
+});
 const formElement = document.querySelector('.popup__form');
 const nameInput = document.querySelector('.popup__input[name="name"]');
 const jobInput = document.querySelector('.popup__input[name="job"]');
@@ -70,14 +72,14 @@ nameInput.value = nameProfile.textContent;
 jobInput.value = aboutProfile.textContent;
 
 function handleFormSubmit(evt) {
-    evt.preventDefault();
 
+    evt.preventDefault();
     const nameInputValue  = nameInput.value;
     const jobInputValue = jobInput.value;
 
     nameProfile.textContent = nameInputValue;
     aboutProfile.textContent = jobInputValue;
-
+    popupClose(popupProfile);
 }
 
 
@@ -86,10 +88,6 @@ formElement.addEventListener('submit', handleFormSubmit);
 const formCards = document.querySelector('.popup__form[name="cards"]');
 const nameInputCard = formCards.querySelector('.popup__input[name="nameCards"]');
 const imageInputCard = formCards.querySelector('.popup__input[name="imageCards"]');
-const cardsTemplate = document.querySelector('#cards').content;
-const card = cardsTemplate.querySelector('.publications__card').cloneNode(true);
-const linkPopupImage = card.querySelector('.popup-open');
-
 
 function createCard(newCard) {
   const cardsTemplate = document.querySelector('#cards').content;
@@ -112,11 +110,9 @@ function createCard(newCard) {
 
     const buttonsDeleteCard = card.querySelector('.publications__btndelete');
     const publicationsCards = document.querySelectorAll('.publications__card');
-    function handler(evt) {
-         evt.target.parentNode.parentNode.removeChild(evt.target.parentNode);
-    }
+
       buttonsDeleteCard.addEventListener('click', function (evt) {
-        card.parentElement.removeChild(card);
+        card.remove(card);
       });
       return card;
 
@@ -131,10 +127,9 @@ function handleFormSubmitAddCard(evt) {
   publications.prepend(createCard(newCard));
   nameInputCard.value = '';
   imageInputCard.value = '';
+  popupClose(addCardPopup);
 }
 initialCards.forEach((newCard) => {
-  const cardsTemplate = document.querySelector('#cards').content;
-  const card = cardsTemplate.querySelector('.publications__card').cloneNode(true);
   publications.append(createCard(newCard));
 });
 
