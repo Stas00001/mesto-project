@@ -1,5 +1,5 @@
-import { popupClose, popupOpen, formElement, popupProfile, addCardPopup, popupCardImage, popupText, popupImage } from "./modal.js";
-export {formCards, handleFormSubmitAddCard};
+import { popupClose, popupOpen, formElement, popupProfile, addCardPopup, popupCardImage, popupText, popupImage, closePopupEsc, closePopupOutside } from "./modal.js";
+export {formCards, nameInputCard, imageInputCard, publications, createCard, initialCards};
 const formCards = document.querySelector('.popup__form[name="cards"]');
 const nameInputCard = formCards.querySelector('.popup__input[name="nameCards"]');
 const imageInputCard = formCards.querySelector('.popup__input[name="imageCards"]');
@@ -31,7 +31,6 @@ const initialCards = [
   }
 ];
 
-
 function createCard(newCard) {
   const cardsTemplate = document.querySelector('#cards').content;
   const card = cardsTemplate.querySelector('.publications__card').cloneNode(true);
@@ -49,32 +48,17 @@ function createCard(newCard) {
     popupText.textContent = newCard.name;
     popupCardImage.alt = newCard.name;
     popupOpen(popupImage);
+    document.addEventListener("keydown", closePopupEsc);
+    document.addEventListener('mousedown', closePopupOutside);
+
   });
   cardDelete(card);
   return card;
 }
+
 function cardDelete(card) {
-  const buttonsDeleteCard = card.querySelectorAll('.publications__btndelete');
-  buttonsDeleteCard.forEach((btn) => {
-    btn.addEventListener('click', function (evt) {
-      card.remove(card);
-    });
-  })
+  const buttonsDeleteCard = card.querySelector('.publications__btndelete');
+  buttonsDeleteCard.addEventListener('click', function (evt) {
+    card.remove(card);
+  });
 }
-
-
-
-function handleFormSubmitAddCard(evt) {
-  evt.preventDefault();
-  const newCard = {};
-  newCard.name = nameInputCard.value;
-  newCard.link = imageInputCard.value;
-  publications.prepend(createCard(newCard));
-  nameInputCard.value = '';
-  imageInputCard.value = '';
-  popupClose(addCardPopup);
-}
-initialCards.forEach((newCard) => {
-  publications.append(createCard(newCard));
-});
-

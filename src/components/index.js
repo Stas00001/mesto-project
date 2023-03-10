@@ -1,35 +1,69 @@
-import { popupClose, popupOpen, formElement, popupProfile } from "./modal.js";
-import { handleFormSubmit } from "./utils.js";
-import { formCards, handleFormSubmitAddCard } from "./card.js";
-import { enableValidation } from "./validate.js";
+import { popupClose, popupOpen, formProfile, popupProfile, closePopupEsc, closePopupOutside } from "./modal.js";
+import { formCards, nameInputCard, imageInputCard, publications, createCard, initialCards } from "./card.js";
+import { enableValidation, config, toggleButtonState } from "./validate.js";
 import '../pages/index.css';
 const buttonsClosePopup = document.querySelectorAll('.popup__close-btn');
 const btnAddCard = document.querySelector('.profile__btn_type_add');
 const btnEditProfile = document.querySelector('.profile__btn_type_edit');
 const addCardPopup = document.getElementById('popup_add');
+const buttonSumbit = document.getElementById('submitCard');
+const nameInput = document.querySelector('.popup__input[name="name"]');
+const jobInput = document.querySelector('.popup__input[name="job"]');
+const nameProfile = document.querySelector('.profile__name');
+const aboutProfile = document.querySelector('.profile__about');
+
+
+initialCards.forEach((newCard) => {
+  publications.append(createCard(newCard));
+});
 
 buttonsClosePopup.forEach(button => {
-  button.addEventListener('click', function(evt) {
+  button.addEventListener('click', function (evt) {
     popupClose(evt.currentTarget.closest('.popup'));
   })
-  })
-  
-  document.addEventListener('keydown', function (evt) {
-  if(evt.key === 'Escape'){
-    evt.preventDefault();
-    const popupActive = document.querySelector('.popup.popup_opened');
-    popupClose(popupActive);
-  } 
-  })
-  
-  
-  btnAddCard.addEventListener('click', function (evt) {
-  popupOpen(addCardPopup);
-  });
-  btnEditProfile.addEventListener('click', function (evt) {
-  popupOpen(popupProfile);
-  });
+});
 
-formElement.addEventListener('submit', handleFormSubmit);
+btnAddCard.addEventListener('click', function (evt) {
+  popupOpen(addCardPopup);
+  document.addEventListener("keydown", closePopupEsc);
+  document.addEventListener('mousedown', closePopupOutside);
+
+});
+
+btnEditProfile.addEventListener('click', function (evt) {
+  popupOpen(popupProfile);
+  document.addEventListener("keydown", closePopupEsc);
+  document.addEventListener('mousedown', closePopupOutside);
+});
+
+nameInput.value = nameProfile.textContent;
+jobInput.value = aboutProfile.textContent;
+
+function handleFormSubmitProfile(evt) {
+
+  evt.preventDefault();
+  const nameInputValue = nameInput.value;
+  const jobInputValue = jobInput.value;
+
+  nameProfile.textContent = nameInputValue;
+  aboutProfile.textContent = jobInputValue;
+  popupClose(popupProfile);
+}
+
+formProfile.addEventListener('submit', handleFormSubmitProfile);
+
+function handleFormSubmitAddCard(evt) {
+  evt.preventDefault();
+  const newCard = {};
+  newCard.name = nameInputCard.value;
+  newCard.link = imageInputCard.value;
+  publications.prepend(createCard(newCard));
+  formCards.reset();
+  buttonSumbit.disabled = true;
+  buttonSumbit.classList.add(config.inactiveButtonClass);
+  popupClose(addCardPopup);
+}
+
 formCards.addEventListener('submit', handleFormSubmitAddCard);
-enableValidation();
+
+enableValidation(config);

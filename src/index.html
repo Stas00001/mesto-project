@@ -30,7 +30,7 @@
         <template id="cards">
           <div class="publications__card">
             <button class="publications__btndelete" type="button" name="button"></button>
-            <a href="#popup_image" name="popup_image" class="popup-open"><img class="publications__image" src="" alt=""><a>
+            <a href="#popup_image" name="popup_image" class="popup-open"><img class="publications__image" src="" alt=""></a>
             <div class="publications__description">
               <h2 class="publications__title"></h2>
               <button class="publications__btnlike" type="button" name="button"></button>
@@ -44,13 +44,13 @@
     </footer>
     <div class="popup" id="popup_profile">
         <div class="popup__body">
-          <form class="popup__form form" name="popup" novalidate>
+          <form id="formProfile" class="popup__form form" name="popup" novalidate>
             <h2 class="popup__title">Редактировать профиль</h2>
                 <input id="name-input" class="popup__input"  type="text" name="name" placeholder="Имя" minlength="2" maxlength="20" pattern="^[а-яА-ЯёЁa-zA-Z -]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
                 <span class="popup__input-error name-input-error">Вы пропустили это поле.</span>
                 <input id="about-input" class="popup__input" type="text" name="job" placeholder="Статус" minlength="2" maxlength="200" pattern="^[а-яА-ЯёЁa-zA-Z -]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы" required>
                 <span class="popup__input-error about-input-error"> Вы пропустили это поле.</span>
-              <button class="popup__save-btn " type="submit" name="button">Сохранить</button>
+              <button class="popup__save-btn popup__save-btn_inactive" type="submit" name="button" disabled>Сохранить</button>
           </form>
           <button class="popup__close-btn" type="button" name="button"></button>
         </div>
@@ -64,7 +64,7 @@
                 <input id="image-input" class="popup__input" type="url" name="imageCards" placeholder="Ссылка на картинку" required>
                 <span class="popup__input-error image-input-error">Вы пропустили это поле.</span>
                 <button class="popup__close-btn" type="button" name="button"></button>
-              <button class="popup__save-btn " type="submit" name="button">Создать</button>
+              <button id="submitCard" class="popup__save-btn popup__save-btn_inactive" type="submit" name="button" disabled>Создать</button>
           </form>
         </div>
     </div>
