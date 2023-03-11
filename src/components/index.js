@@ -25,28 +25,23 @@ buttonsClosePopup.forEach(button => {
 
 btnAddCard.addEventListener('click', function (evt) {
   popupOpen(addCardPopup);
-  document.addEventListener("keydown", closePopupEsc);
-  document.addEventListener('mousedown', closePopupOutside);
-
 });
 
 btnEditProfile.addEventListener('click', function (evt) {
   popupOpen(popupProfile);
-  document.addEventListener("keydown", closePopupEsc);
-  document.addEventListener('mousedown', closePopupOutside);
 });
-
 nameInput.value = nameProfile.textContent;
 jobInput.value = aboutProfile.textContent;
 
-function handleFormSubmitProfile(evt) {
 
+function handleFormSubmitProfile(evt) {
   evt.preventDefault();
   const nameInputValue = nameInput.value;
   const jobInputValue = jobInput.value;
-
   nameProfile.textContent = nameInputValue;
   aboutProfile.textContent = jobInputValue;
+  nameInput.value = nameProfile.textContent;
+  jobInput.value = aboutProfile.textContent;
   popupClose(popupProfile);
 }
 

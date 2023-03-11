@@ -48,9 +48,6 @@ function createCard(newCard) {
     popupText.textContent = newCard.name;
     popupCardImage.alt = newCard.name;
     popupOpen(popupImage);
-    document.addEventListener("keydown", closePopupEsc);
-    document.addEventListener('mousedown', closePopupOutside);
-
   });
   cardDelete(card);
   return card;

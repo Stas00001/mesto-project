@@ -9,7 +9,8 @@ const popupImage = document.getElementById('popup_image')
 
 function popupOpen(curentPopup) {
   curentPopup.classList.add('popup_opened');
-
+  document.addEventListener("keydown", closePopupEsc);
+  document.addEventListener('mousedown', closePopupOutside);
 }
 
 function popupClose(curentPopup) {
