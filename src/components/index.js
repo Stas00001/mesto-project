@@ -11,8 +11,10 @@ const nameInput = document.querySelector('.popup__input[name="name"]');
 const jobInput = document.querySelector('.popup__input[name="job"]');
 const nameProfile = document.querySelector('.profile__name');
 const aboutProfile = document.querySelector('.profile__about');
-
-
+const userInfo = {
+  nameUser: '',
+  infoUser: '',
+};
 initialCards.forEach((newCard) => {
   publications.append(createCard(newCard));
 });
@@ -30,20 +32,25 @@ btnAddCard.addEventListener('click', function (evt) {
 btnEditProfile.addEventListener('click', function (evt) {
   popupOpen(popupProfile);
 });
-nameInput.value = nameProfile.textContent;
-jobInput.value = aboutProfile.textContent;
 
+
+function getUserInfo (nameProfileValue, aboutProfileValue ){
+  userInfo.nameUser = nameProfileValue.textContent;
+  userInfo.infoUser = aboutProfileValue.textContent;
+  nameInput.value = userInfo.nameUser;
+  jobInput.value = userInfo.infoUser;
+}
+getUserInfo(nameProfile, aboutProfile);
 
 function handleFormSubmitProfile(evt) {
   evt.preventDefault();
-  const nameInputValue = nameInput.value;
-  const jobInputValue = jobInput.value;
-  nameProfile.textContent = nameInputValue;
-  aboutProfile.textContent = jobInputValue;
-  nameInput.value = nameProfile.textContent;
-  jobInput.value = aboutProfile.textContent;
+  nameProfile.textContent = nameInput.value;
+  aboutProfile.textContent = jobInput.value;
+  getUserInfo(nameProfile, aboutProfile);
   popupClose(popupProfile);
+
 }
+
 
 formProfile.addEventListener('submit', handleFormSubmitProfile);
 
