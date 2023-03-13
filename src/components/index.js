@@ -32,8 +32,6 @@ btnAddCard.addEventListener('click', function (evt) {
 btnEditProfile.addEventListener('click', function (evt) {
   popupOpen(popupProfile);
   getUserInfo(nameProfile, aboutProfile);
-  console.log(userInfo);
-
 });
 
 
