@@ -31,6 +31,9 @@ btnAddCard.addEventListener('click', function (evt) {
 
 btnEditProfile.addEventListener('click', function (evt) {
   popupOpen(popupProfile);
+  getUserInfo(nameProfile, aboutProfile);
+  console.log(userInfo);
+
 });
 
 
@@ -46,7 +49,7 @@ function handleFormSubmitProfile(evt) {
   evt.preventDefault();
   nameProfile.textContent = nameInput.value;
   aboutProfile.textContent = jobInput.value;
-  getUserInfo(nameProfile, aboutProfile);
+  formProfile.reset();
   popupClose(popupProfile);
 
 }
