@@ -1,6 +1,9 @@
+import { formCards } from "./card";
+import { config, resetError } from "./validate";
 export { popupOpen, popupClose, formProfile, popupProfile, addCardPopup, popupCardImage, 
-popupText, popupImage, closePopupEsc, closePopupOutside };
+popupText, popupImage, closePopupEsc, closePopupOutside, formAvatar};
 const formProfile = document.getElementById('formProfile');
+const formAvatar = document.getElementById('formAvatar');
 const popupProfile = document.getElementById('popup_profile');
 const addCardPopup = document.getElementById('popup_add');
 const popupCardImage = document.querySelector('.popup__images');
@@ -16,7 +19,11 @@ function popupOpen(curentPopup) {
 function popupClose(curentPopup) {
   curentPopup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closePopupEsc);
-  document.removeEventListener('mousedown', closePopupOutside)
+  document.removeEventListener('mousedown', closePopupOutside);
+  resetError(formCards, config);
+  resetError(formProfile, config);
+  resetError(formAvatar, config);
+
 }
 
 function closePopupEsc(evt) {

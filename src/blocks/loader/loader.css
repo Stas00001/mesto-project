@@ -1,0 +1,9 @@
+.loader{
+    font-weight: bold;
+    display: none;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 22px;
+    clip-path: inset(0 1.1ch 0 0);
+    animation: loading 1s steps(4) infinite;
+  }

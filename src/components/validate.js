@@ -1,4 +1,4 @@
-export { enableValidation, toggleButtonState, config };
+export { enableValidation, toggleButtonState, config, resetError };
 
 const config = {
   formSelector: '.form',
@@ -15,6 +15,7 @@ const showInputError = (formElement, inputElement, errorMessage, config) => {
   errorElement.textContent = errorMessage;
   errorElement.classList.add(config.errorClass);
 };
+
 
 const hideInputError = (formElement, inputElement, config) => {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
@@ -49,6 +50,7 @@ const setEventListeners = (formElement, config) => {
 };
 
 const enableValidation = (config) => {
+  
   const formList = Array.from(document.querySelectorAll(config.formSelector));
   formList.forEach((formElement) => {
     formElement.addEventListener('submit', (evt) => {
@@ -62,6 +64,7 @@ const hasInvalidInput = (inputList) => {
   return inputList.some((inputElement) => {
     return !inputElement.validity.valid;
   })
+  
 };
 
 const toggleButtonState = (inputList, buttonElement, config) => {
@@ -74,3 +77,13 @@ const toggleButtonState = (inputList, buttonElement, config) => {
   }
 };
 
+function resetError(formElement, config) { 
+  const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
+  // очищаем ошибки валидации
+  inputList.forEach(inputElement => hideInputError(formElement, inputElement, config));
+  formElement.reset();
+  // актуализируем состояние кнопки сабмита
+  const buttonElement = formElement.querySelector(config.submitButtonSelector);
+
+  toggleButtonState(inputList, buttonElement, config); 
+}

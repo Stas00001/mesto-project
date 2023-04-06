@@ -1,4 +1,5 @@
 .publications__btnlike_active{
   opacity: 1;
   background: url("../../../../images/heart-black.svg") center no-repeat;
+  animation: identifier .6s  ease-in ;
 }

@@ -1,0 +1,4 @@
+.publications__like_active {
+    display: flex;
+    animation: like .3s ease-in-out ;
+}
