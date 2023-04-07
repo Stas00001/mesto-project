@@ -1,5 +1,5 @@
 import {popupOpen, popupCardImage, popupText, popupImage } from "./modal.js";
-import { deleteCard, deleteLikeCards, getUser, likeCards } from "./api.js";
+import { deleteCard, deleteLikeCards, getCards, getUser, likeCards } from "./api.js";
 export {formCards, nameInputCard, imageInputCard, publications, createCard};
 const formCards = document.querySelector('.popup__form[name="cards"]');
 const nameInputCard = formCards.querySelector('.popup__input[name="nameCards"]');
@@ -20,7 +20,7 @@ function createCard(newCard) {
   imageCard.src = newCard.link;
   imageCard.alt = newCard.name;
   like = newCard.likes.length;
-  let likeArray = newCard.likes;
+  const likeArray = newCard.likes;
   cardId = newCard._id;
   userCardId = newCard.owner._id;
   let result = likeArray.map(user => user._id);
@@ -28,39 +28,32 @@ function createCard(newCard) {
   if (like >0){
     likeNum.classList.add('publications__like_active');
   }
-
-  getUser()
-  .then((user) => {
-    if(result.includes(user._id)){
-      btnLike.classList.add('publications__btnlike_active');
-
-    }
-    })
-  card.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('publications__btnlike')){
+  btnLike.addEventListener('click', function (evt) {
         if (evt.target.classList.contains('publications__btnlike_active')){
-          likeCard = false;
-          like = likeCard ? ++like: --like;
-          likeCard = !likeCard;
-          evt.target.classList.toggle('publications__btnlike_active');
-          deleteLikeCards(cardId);
-          card.querySelector('#like').innerHTML = like;
-
-        } else  {
-          likeCard = true;
-          like = likeCard ? ++like : --like;
-          likeCard = !likeCard;
-          evt.target.classList.toggle('publications__btnlike_active');
-          likeCards(cardId);
-          card.querySelector('#like').innerHTML = like;
+            deleteLikeCards(cardId)
+            .then(() => {
+              likeCard = false;
+              like = likeCard ? ++like: --like;
+              evt.target.classList.toggle('publications__btnlike_active');
+              card.querySelector('#like').innerHTML = like;
+            })
+            .catch((err) => {
+              console.error(err);
+            })
+        } else  {         
+            likeCards(cardId)
+            .then(() => {
+              likeCard = true;
+              like = likeCard ? ++like : --like;
+              evt.target.classList.toggle('publications__btnlike_active');
+              card.querySelector('#like').innerHTML = like;
+            })  
+            .catch((err) => {
+              console.error(err);
+            })
         }
-    if (like ===0 && evt.target.classList.contains('publications__btnlike')) {
-      likeNum.classList.toggle('publications__like_active');
-    }
-    }
   });
 
- 
   card.querySelector('.popup-open').addEventListener('click', function (evt) {
     evt.preventDefault();
     popupCardImage.src = newCard.link;
@@ -68,19 +61,31 @@ function createCard(newCard) {
     popupCardImage.alt = newCard.name;
     popupOpen(popupImage);
   });
-  cardDelete(card, userCardId, cardId);
-  return card;
-}
-function cardDelete(card, userCardId, cardId) {
-  const buttonsDeleteCard = card.querySelector('.publications__btndelete');
   getUser()
   .then((user) => {
-    if (userCardId === user._id) {
+    if(result.includes(user._id)){
+      btnLike.classList.add('publications__btnlike_active');
+    }
+    cardDelete(card, userCardId, cardId, user._id);
+    })
+  .catch((err) => {
+    console.error(err);
+  })
+  return card;
+}
+
+function cardDelete(card, userCardId, cardId, user) {
+  const buttonsDeleteCard = card.querySelector('.publications__btndelete');
+      if(userCardId === user){
       buttonsDeleteCard.classList.remove('publications__btndelete_inactive');
       buttonsDeleteCard.addEventListener('click', function (evt) {
-      card.remove(card);
-      deleteCard(cardId);
+        deleteCard(cardId)
+        .then(() => {
+          card.remove(card);
+        })
+        .catch((err) => {
+          console.error(err);
+        })
       });
-    }
-  })
+      }
 }

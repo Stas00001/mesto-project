@@ -18,11 +18,20 @@ const nameProfile = document.querySelector('.profile__name');
 const aboutProfile = document.querySelector('.profile__about');
 const btnProfileAvatarPopup = document.querySelector('.profile__avatar');
 
-getCards()
-.then((data)=>{
-  data.forEach(newCard => {
-   publications.append(createCard(newCard));
-  }); 
+Promise.all([
+  getUser(), 
+  getCards()])
+.then(([user, card])=>{
+  nameProfile.textContent = user.name;
+  aboutProfile.textContent = user.about;
+  imageAvatar.src = user.avatar;
+  card.forEach(newCard => {
+    publications.append(createCard(newCard));
+   }); 
+ 
+})
+.catch((err) => {
+  console.error(err);
 })
 buttonsClosePopup.forEach(button => {
   button.addEventListener('click', function (evt) {
@@ -48,22 +57,25 @@ function getUserInfo (nameProfileValue, aboutProfileValue ){
   nameInput.value = nameProfileValue.textContent;;
   jobInput.value = aboutProfileValue.textContent;;
 }
-getUser()
-.then((data) => {
-  nameProfile.textContent = data.name;
-  aboutProfile.textContent = data.about;
-  imageAvatar.src = data.avatar;
-});
+
 function handleFormSubmitProfile(evt) {
   evt.preventDefault();
   renderLoading(true);
-  nameProfile.textContent = nameInput.value;
-  aboutProfile.textContent = jobInput.value;
-  patchUser(nameProfile, aboutProfile)
+  patchUser({name: nameInput.value, about: jobInput.value})
+  .then((dataUpdateUser) => {
+    nameProfile.textContent = dataUpdateUser.name;
+    aboutProfile.textContent = dataUpdateUser.about;
+  })
+  .then(() => {
+    formProfile.reset();
+    popupClose(popupProfile);
+  })
   .finally(() => {
     renderLoading(false);
-    popupClose(popupProfile);
-  });
+  })
+  .catch((err) => {
+    console.error(err);
+  })
 }
 
 
@@ -73,17 +85,22 @@ function handleFormSubmitAddCard(evt) {
   evt.preventDefault();
   renderLoading(true);
   const newCard = {};
-  newCard.name = nameInputCard.value;
-  newCard.link = imageInputCard.value;
-  postCard(newCard.name, newCard.link)
-  .then((newCard)=>{
-    publications.prepend(createCard(newCard));
+  postCard({name: nameInputCard.value, link: imageInputCard.value})
+  .then((card)=>{
+    newCard.name = card.name;
+    newCard.link = card.link;
+    publications.prepend(createCard(card));
+  })
+  .then(() => {
+    formCards.reset();
+    popupClose(addCardPopup);
   })
   .finally(() => {
     renderLoading(false);
-    popupClose(addCardPopup);
-  });
- 
+  })
+  .catch((err) => {
+    console.error(err);
+  })
 }
 
 formCards.addEventListener('submit', handleFormSubmitAddCard);
@@ -91,12 +108,19 @@ formCards.addEventListener('submit', handleFormSubmitAddCard);
 function handleFormSubmitAvatar(evt) {
   evt.preventDefault();
   renderLoading(true);
-  const linkAvatar = avatarInput.value;
-  imageAvatar.src = linkAvatar;
-  avatarProfile(linkAvatar)
+  avatarProfile({avatar: avatarInput.value})
+  .then((dataUpdateAvatar)=>{
+    imageAvatar.src = dataUpdateAvatar.avatar
+  })
+  .then(() => {
+    formAvatar.reset();
+    popupClose(profileAvatarPopup);
+  })
   .finally(() => {
     renderLoading(false);
-    popupClose(profileAvatarPopup);
+  })
+  .catch((err) => {
+    console.error(err);
   })
 }
 

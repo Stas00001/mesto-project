@@ -26,25 +26,20 @@ const configApi = {
     .then(getRespome)
   }
 
-  const patchUser = (name, about) => {
+  const patchUser = (body) => {
     return fetch(`${configApi.baseUrl}/users/me`, {
     method: 'PATCH',
     headers: configApi.headers,
-    body: JSON.stringify({
-        name: name.textContent,
-        about: about.textContent,
-        })
-    });
+    body: JSON.stringify(body)
+    })
+    .then(getRespome)
   }
 
-  const postCard = (nameCard, linkCard) => {
+  const postCard = (body) => {
     return fetch(`${configApi.baseUrl}/cards`, {
         method: 'POST',
         headers: configApi.headers,
-        body: JSON.stringify({
-            name: nameCard,
-            link: linkCard,
-        })
+        body: JSON.stringify(body)
     })
     .then(getRespome);
   }
@@ -72,13 +67,11 @@ const configApi = {
     .then(getRespome);
   }
 
-  const avatarProfile = (linkAvatar) => {
+  const avatarProfile = (body) => {
     return fetch(`${configApi.baseUrl}/users/me/avatar`, {
         method: 'PATCH',
         headers: configApi.headers,
-        body: JSON.stringify({
-            avatar: linkAvatar
-        })
+        body: JSON.stringify(body)  
     })
     .then(getRespome);
   }

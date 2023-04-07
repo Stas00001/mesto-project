@@ -9,21 +9,20 @@ const addCardPopup = document.getElementById('popup_add');
 const popupCardImage = document.querySelector('.popup__images');
 const popupText = document.querySelector('.popup__text');
 const popupImage = document.getElementById('popup_image')
-
+const popup = document.querySelectorAll('.popup');
+popup.forEach((popup) => {
+  popup.addEventListener('mousedown', closePopupOutside);
+})
 function popupOpen(curentPopup) {
   curentPopup.classList.add('popup_opened');
   document.addEventListener("keydown", closePopupEsc);
-  document.addEventListener('mousedown', closePopupOutside);
 }
+
 
 function popupClose(curentPopup) {
   curentPopup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closePopupEsc);
-  document.removeEventListener('mousedown', closePopupOutside);
-  resetError(formCards, config);
-  resetError(formProfile, config);
-  resetError(formAvatar, config);
-
+  resetError(curentPopup, config);
 }
 
 function closePopupEsc(evt) {
@@ -38,4 +37,4 @@ function closePopupOutside(evt) {
     if (!evt.target.closest('.popup__body')) {
       popupClose(evt.target.closest('.popup'));
     }
-}
+  }

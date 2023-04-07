@@ -81,7 +81,6 @@ function resetError(formElement, config) {
   const inputList = Array.from(formElement.querySelectorAll(config.inputSelector));
   // очищаем ошибки валидации
   inputList.forEach(inputElement => hideInputError(formElement, inputElement, config));
-  formElement.reset();
   // актуализируем состояние кнопки сабмита
   const buttonElement = formElement.querySelector(config.submitButtonSelector);
 
