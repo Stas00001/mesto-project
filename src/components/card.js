@@ -1,5 +1,6 @@
 import {popupOpen, popupCardImage, popupText, popupImage } from "./modal.js";
-import { deleteCard, deleteLikeCards, getCards, getUser, likeCards } from "./api.js";
+import { deleteCard, deleteLikeCards, likeCards } from "./api.js";
+import { nameProfile, aboutProfile } from "./utils.js";
 export {formCards, nameInputCard, imageInputCard, publications, createCard};
 const formCards = document.querySelector('.popup__form[name="cards"]');
 const nameInputCard = formCards.querySelector('.popup__input[name="nameCards"]');
@@ -14,26 +15,24 @@ function createCard(newCard) {
   let like;
   let userCardId;
   let cardId;
-  let likeCard ; 
   const likeNum = card.querySelector('.publications__like');
   titleCard.textContent = newCard.name;
   imageCard.src = newCard.link;
   imageCard.alt = newCard.name;
   like = newCard.likes.length;
-  const likeArray = newCard.likes;
   cardId = newCard._id;
   userCardId = newCard.owner._id;
-  let result = likeArray.map(user => user._id);
+  const likeArray = newCard.likes;
+  const usersLike = likeArray.map(users => users._id);
   card.querySelector('#like').innerHTML = like;
-  if (like >0){
-    likeNum.classList.add('publications__like_active');
+  if (like >=0){
+    likeNum.classList.toggle('publications__like_active');
   }
   btnLike.addEventListener('click', function (evt) {
         if (evt.target.classList.contains('publications__btnlike_active')){
             deleteLikeCards(cardId)
             .then(() => {
-              likeCard = false;
-              like = likeCard ? ++like: --like;
+              like = --like;
               evt.target.classList.toggle('publications__btnlike_active');
               card.querySelector('#like').innerHTML = like;
             })
@@ -43,8 +42,7 @@ function createCard(newCard) {
         } else  {         
             likeCards(cardId)
             .then(() => {
-              likeCard = true;
-              like = likeCard ? ++like : --like;
+              like =++like;
               evt.target.classList.toggle('publications__btnlike_active');
               card.querySelector('#like').innerHTML = like;
             })  
@@ -61,22 +59,20 @@ function createCard(newCard) {
     popupCardImage.alt = newCard.name;
     popupOpen(popupImage);
   });
-  getUser()
-  .then((user) => {
-    if(result.includes(user._id)){
-      btnLike.classList.add('publications__btnlike_active');
-    }
-    cardDelete(card, userCardId, cardId, user._id);
-    })
-  .catch((err) => {
-    console.error(err);
-  })
+ const nameProfileTextElement = document.querySelector('.profile__name[data-edited="true"]');
+ const userId = nameProfileTextElement.dataset.id;
+  if(usersLike.includes(userId)){
+    btnLike.classList.add('publications__btnlike_active');
+ }
+  cardDelete(card, userCardId, cardId, userId);
+  
   return card;
 }
 
-function cardDelete(card, userCardId, cardId, user) {
+
+function cardDelete(card, userCardId, cardId, userId) {
   const buttonsDeleteCard = card.querySelector('.publications__btndelete');
-      if(userCardId === user){
+      if(userCardId === userId){
       buttonsDeleteCard.classList.remove('publications__btndelete_inactive');
       buttonsDeleteCard.addEventListener('click', function (evt) {
         deleteCard(cardId)

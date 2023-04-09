@@ -1,8 +1,9 @@
 export {nameProfile, aboutProfile};
 import { popupClose, popupOpen, formProfile, popupProfile, formAvatar } from "./modal.js";
 import { formCards, nameInputCard, imageInputCard, publications, createCard } from "./card.js";
-import { enableValidation, config} from "./validate.js";
+import { enableValidation, config, resetError} from "./validate.js";
 import { getUser, getCards, patchUser, postCard, avatarProfile } from "./api.js";
+import { nameProfile, aboutProfile } from "./utils.js";
 import '../pages/index.css';
 const imageAvatar = document.querySelector('.profile__avatar-image');
 const buttonsClosePopup = document.querySelectorAll('.popup__close-btn');
@@ -14,8 +15,6 @@ const buttonSumbit = document.getElementById('submitCard');
 const nameInput = document.querySelector('.popup__input[name="name"]');
 const jobInput = document.querySelector('.popup__input[name="job"]');
 const avatarInput = document.querySelector('.popup__input[name="avatar"]');
-const nameProfile = document.querySelector('.profile__name');
-const aboutProfile = document.querySelector('.profile__about');
 const btnProfileAvatarPopup = document.querySelector('.profile__avatar');
 
 Promise.all([
@@ -25,14 +24,17 @@ Promise.all([
   nameProfile.textContent = user.name;
   aboutProfile.textContent = user.about;
   imageAvatar.src = user.avatar;
+  nameProfile.dataset.edited = true;
+  nameProfile.dataset.id = user._id;
   card.forEach(newCard => {
     publications.append(createCard(newCard));
-   }); 
- 
+   }) 
 })
 .catch((err) => {
   console.error(err);
 })
+
+
 buttonsClosePopup.forEach(button => {
   button.addEventListener('click', function (evt) {
     popupClose(evt.currentTarget.closest('.popup'));
@@ -40,10 +42,12 @@ buttonsClosePopup.forEach(button => {
 });
 
 btnAddCard.addEventListener('click', function (evt) {
+  resetError(formCards, config)
   popupOpen(addCardPopup);
 });
 
 btnEditProfile.addEventListener('click', function (evt) {
+  resetError(formProfile, config)
   popupOpen(popupProfile);
   getUserInfo(nameProfile, aboutProfile);
 });
@@ -84,11 +88,10 @@ formProfile.addEventListener('submit', handleFormSubmitProfile);
 function handleFormSubmitAddCard(evt) {
   evt.preventDefault();
   renderLoading(true);
-  const newCard = {};
   postCard({name: nameInputCard.value, link: imageInputCard.value})
   .then((card)=>{
-    newCard.name = card.name;
-    newCard.link = card.link;
+    card.name = card.name;
+    card.link = card.link;
     publications.prepend(createCard(card));
   })
   .then(() => {

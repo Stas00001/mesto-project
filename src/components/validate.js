@@ -1,3 +1,5 @@
+import { popupClose, popupProfile } from "./modal";
+
 export { enableValidation, toggleButtonState, config, resetError };
 
 const config = {
@@ -83,6 +85,5 @@ function resetError(formElement, config) {
   inputList.forEach(inputElement => hideInputError(formElement, inputElement, config));
   // актуализируем состояние кнопки сабмита
   const buttonElement = formElement.querySelector(config.submitButtonSelector);
-
   toggleButtonState(inputList, buttonElement, config); 
 }

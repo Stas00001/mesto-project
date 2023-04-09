@@ -10,9 +10,12 @@ const popupCardImage = document.querySelector('.popup__images');
 const popupText = document.querySelector('.popup__text');
 const popupImage = document.getElementById('popup_image')
 const popup = document.querySelectorAll('.popup');
+const popupActive = document.querySelector('.popup.popup_opened');
+
 popup.forEach((popup) => {
   popup.addEventListener('mousedown', closePopupOutside);
 })
+
 function popupOpen(curentPopup) {
   curentPopup.classList.add('popup_opened');
   document.addEventListener("keydown", closePopupEsc);
@@ -22,13 +25,11 @@ function popupOpen(curentPopup) {
 function popupClose(curentPopup) {
   curentPopup.classList.remove('popup_opened');
   document.removeEventListener('keydown', closePopupEsc);
-  resetError(curentPopup, config);
 }
 
 function closePopupEsc(evt) {
   if (evt.key === 'Escape') {
     evt.preventDefault();
-    const popupActive = document.querySelector('.popup.popup_opened');
     popupClose(popupActive);
   }
 }

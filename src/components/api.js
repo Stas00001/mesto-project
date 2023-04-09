@@ -17,7 +17,7 @@ const configApi = {
       headers: configApi.headers,
     })
     .then(getRespome)
-  }
+  };
   
   const getCards = () => {
     return fetch(`${configApi.baseUrl}/cards`,{
