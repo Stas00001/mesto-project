@@ -13,15 +13,13 @@ function createCard(newCard) {
   const imageCard = card.querySelector('.publications__image');
   const btnLike = card.querySelector('.publications__btnlike');
   let like;
-  let userCardId;
-  let cardId;
   const likeNum = card.querySelector('.publications__like');
   titleCard.textContent = newCard.name;
   imageCard.src = newCard.link;
   imageCard.alt = newCard.name;
   like = newCard.likes.length;
-  cardId = newCard._id;
-  userCardId = newCard.owner._id;
+  const cardId = newCard._id;
+  const userCardId = newCard.owner._id;
   const likeArray = newCard.likes;
   const usersLike = likeArray.map(users => users._id);
   card.querySelector('#like').innerHTML = like;
