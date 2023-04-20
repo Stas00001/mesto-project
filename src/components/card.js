@@ -1,11 +1,50 @@
 import {popupOpen, popupCardImage, popupText, popupImage } from "./modal.js";
-import { deleteCard, deleteLikeCards, likeCards } from "./api.js";
+import { deleteCard, deleteLikeCards, likeCards } from "./Api.js";
 import { nameProfile, aboutProfile } from "./utils.js";
-export {formCards, nameInputCard, imageInputCard, publications, createCard};
+//export {formCards, nameInputCard, imageInputCard, publications, createCard};
 const formCards = document.querySelector('.popup__form[name="cards"]');
 const nameInputCard = formCards.querySelector('.popup__input[name="nameCards"]');
 const imageInputCard = formCards.querySelector('.popup__input[name="imageCards"]');
 const publications = document.querySelector('.publications');
+
+export default class Card {
+  constructor(data, selector){
+    this._name = data.name;
+    this._image = data.link;
+    this._selector = selector;
+  }
+  
+  _getElement() {
+    const cardElement = document.querySelector(this._selector)
+    .content
+    .querySelector('.publications__card')
+    .cloneNode(true);
+
+    return cardElement;
+  }
+  
+  generate() {
+    this._element = this._getElement();
+    this._element.querySelector('.publications__image').src = this._image;
+    this._element.querySelector('.publications__title').textContent = this._name;
+    this._setEventListeners();
+    
+  
+    return this._element
+  }
+  _setEventListeners() {
+		this._element.querySelector('.publications__btnlike').addEventListener('click', () => {
+			this._handleClick();
+		});
+	}
+
+  _handleClick() {
+    this._element.querySelector('.publications__btnlike').classList.toggle('publications__btnlike_active');
+  }
+ }
+
+
+ /*
 function createCard(newCard) {
   const cardsTemplate = document.querySelector('#cards').content;
   const card = cardsTemplate.querySelector('.publications__card').cloneNode(true);
@@ -83,3 +122,4 @@ function cardDelete(card, userCardId, cardId, userId) {
       });
       }
 }
+*/

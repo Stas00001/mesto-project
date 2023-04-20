@@ -1,77 +1,80 @@
-export {configApi, getRespome, getUser, getCards, patchUser, postCard, deleteCard, likeCards, deleteLikeCards, avatarProfile};
+//export {configApi, getRespome, getUser, getCards, patchUser, postCard, deleteCard, likeCards, deleteLikeCards, avatarProfile};
 
-const configApi = {
-    baseUrl: 'https://nomoreparties.co/v1/plus-cohort-22',
-    headers: {
-      authorization: 'a06d07f4-0395-4028-bda1-ecc0fed6969d',
-      'Content-Type': 'application/json',
-    }
+export default class Api {
+  constructor(data){
+    this._baseUrl = data.baseUrl
+    this._headers = data.headers
   }
-  
-  const getRespome = (res) => {
+
+  getRespome(res) {
     return res.ok ? res.json() : Promise.reject(`Error: ${res.status}`);
   }
   
-  const getUser = () => {
-    return fetch(`${configApi.baseUrl}/users/me`, {
-      headers: configApi.headers,
+  getUser() {
+    return fetch(`${this._baseUrl}/users/me`, {
+      headers: this._headers,
     })
-    .then(getRespome)
+    .then(this.getRespome)
   };
-  
-  const getCards = () => {
-    return fetch(`${configApi.baseUrl}/cards`,{
-        headers: configApi.headers,
-    })
-    .then(getRespome)
-  }
 
-  const patchUser = (body) => {
-    return fetch(`${configApi.baseUrl}/users/me`, {
+  getCards () {
+    return fetch(`${this._baseUrl}/cards`,{
+        headers: this._headers,
+    })
+    .then(this.getRespome);
+  }
+  
+  patchUser (body) {
+    return fetch(`${this._baseUrl}/users/me`, {
     method: 'PATCH',
-    headers: configApi.headers,
+    headers: this._headers,
     body: JSON.stringify(body)
     })
-    .then(getRespome)
+    .then(this.getRespome)
   }
-
-  const postCard = (body) => {
-    return fetch(`${configApi.baseUrl}/cards`, {
+  postCard(body) {
+    return fetch(`${this._baseUrl}/cards`, {
         method: 'POST',
-        headers: configApi.headers,
+        headers: this._headers,
         body: JSON.stringify(body)
     })
-    .then(getRespome);
+    .then(this.getRespome);
   }
 
-  const deleteCard = (cardId) => {
-    return fetch(`${configApi.baseUrl}/cards/${cardId}`, {
+  deleteCard(cardId) {
+    return fetch(`${this._baseUrl}/cards/${cardId}`, {
         method: 'DELETE',
-        headers: configApi.headers
+        headers: this._headers
     })
-    .then(getRespome);
+    .then(this.getRespome);
   }
 
-  const likeCards = (cardId) => {
-    return fetch(`${configApi.baseUrl}/cards/likes/${cardId}`, {
+  likeCards (cardId) {
+    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
         method: 'PUT',
-        headers: configApi.headers,
+        headers: this._headers,
     })
-    .then(getRespome);
+    .then(this.getRespome);
   }
-  const deleteLikeCards = (cardId) => {
-    return fetch(`${configApi.baseUrl}/cards/likes/${cardId}`, {
+   
+  deleteLikeCards (cardId) {
+    return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
         method: 'DELETE',
-        headers: configApi.headers,
+        headers: this._headers,
     })
-    .then(getRespome);
+    .then(this.getRespome);
   }
 
-  const avatarProfile = (body) => {
-    return fetch(`${configApi.baseUrl}/users/me/avatar`, {
+  avatarProfile (body) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
         method: 'PATCH',
-        headers: configApi.headers,
+        headers: this._headers,
         body: JSON.stringify(body)  
     })
-    .then(getRespome);
+    .then(this.getRespome);
   }
+}
+
+
+  
+  

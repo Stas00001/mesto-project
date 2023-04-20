@@ -1,4 +1,4 @@
-import { formCards } from "./card";
+import { formCards } from "./Card";
 import { config, resetError } from "./validate";
 export { popupOpen, popupClose, formProfile, popupProfile, addCardPopup, popupCardImage, 
 popupText, popupImage, closePopupEsc, closePopupOutside, formAvatar};
