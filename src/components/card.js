@@ -8,10 +8,15 @@ const imageInputCard = formCards.querySelector('.popup__input[name="imageCards"]
 const publications = document.querySelector('.publications');
 
 export default class Card {
-  constructor(data, selector){
+  constructor(data, selector, user){
     this._name = data.name;
     this._image = data.link;
+    this._idCard = data._id;
+    this._idCardIser = data.owner._id;
+    this._likes = data.likes.length;
     this._selector = selector;
+    this._idUser = user._id;
+    console.log(this._idUser);
   }
   
   _getElement() {
@@ -27,6 +32,8 @@ export default class Card {
     this._element = this._getElement();
     this._element.querySelector('.publications__image').src = this._image;
     this._element.querySelector('.publications__title').textContent = this._name;
+    this._element.querySelector('.publications__image').alt = this._name;
+
     this._setEventListeners();
     
   

@@ -16,15 +16,6 @@ export default class Section {
     }
 }
 
-// это объявление нового класса-контейнера для карточек
-// потом в index перенести
-const publications = new Section({
-    render : element => {
-        // пока старая функция создания карточки
-      const card =   createCard(element)
-      return card
-    }
-},sectionPublicationSelector)
 
-// это потом в константы
 const sectionPublicationSelector = '.publications'
+

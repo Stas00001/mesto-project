@@ -8,8 +8,9 @@ import '../pages/index.css';
 import Api from "./Api.js";
 import Section from './Section.js'
 import Card from './Card.js';
-import { configApi, cardSelector } from "./constanst.js";
+import { configApi, selectorPublications, nameProfile, aboutProfile, avatarProfile } from "./constanst.js";
 import SubmitForm from './SubmitForm';
+import UserInfo from './UserInfo';
 const imageAvatar = document.querySelector('.profile__avatar-image');
 const buttonsClosePopup = document.querySelectorAll('.popup__close-btn');
 const btnAddCard = document.querySelector('.profile__btn_type_add');
@@ -49,28 +50,49 @@ const initialCards = [
 ];
 /*-----------------------*/ 
 const api = new Api(configApi);
+const profile = new UserInfo(
+  nameProfile,
+  aboutProfile,
+  avatarProfile
+)
+
 Promise.all([
   api.getUser(), 
   api.getCards()])
-.then(([user, card])=>{
+.then(([user, cards])=>{
+  profile.setUserInfo(user);
+  const defaultCardList = new Section(
+    {
+      items: cards,
+      render: (item) => {
+        const card = new Card(item, '.cards', user);
+          const cardElement = card.generate();
+          defaultCardList.setItem(cardElement);
+       }
+    }, selectorPublications);
+    
+    defaultCardList.renderItems();
   
 })
 .catch((err) => {
   console.error(err);
 })
-const defaultCardList = new Section(
-  {
-    items: initialCards,
-    render: (item) => {
-      const card = new Card(item, '.cards');
-        const cardElement = card.generate();
-        defaultCardList.setItem(cardElement);
-     }
-  }, cardSelector);
-  defaultCardList.renderItems();
 
 
+const idProfile = {};
 
+
+// const fillInIdProfile = (id) => idProfile._id = id;
+ 
+
+// function initiateProfile() {   // : загрузка данных профиля
+//   getDataProfile()
+//     .then((res) => {
+//       fillInIdProfile(res._id);
+//       fillInDataProfile(res);
+//       return idProfile._id !== undefined;
+//     })
+//   }
 /*
 api.getCards(cards)
   .then((cards) => { 

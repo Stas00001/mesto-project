@@ -6,4 +6,9 @@ export const configApi = {
     }
   }
 
-export const cardSelector = '.publications';
+export const selectorPublications = '.publications';
+const nameInput = document.querySelector('.popup__input[name="name"]');
+const jobInput = document.querySelector('.popup__input[name="job"]');
+export const nameProfile = document.querySelector('.profile__name');
+export const aboutProfile = document.querySelector('.profile__about');
+export const avatarProfile = document.querySelector('.profile__avatar')
