@@ -8,9 +8,21 @@ import '../pages/index.css';
 import Api from "./Api.js";
 import Section from './Section.js'
 import Card from './Card.js';
-import { configApi, selectorPublications, nameProfile, aboutProfile, avatarProfile } from "./constanst.js";
+
+import {
+  configApi,
+  selectorPublications,
+  nameProfile,
+  aboutProfile,
+  avatarProfile,
+  idProfile,
+  cardTemplateSelector,
+  PopupWithImageSelector
+} from "./constanst.js";
+
 import SubmitForm from './SubmitForm';
 import UserInfo from './UserInfo';
+import PopupWithImage from './PopupWithImage';
 const imageAvatar = document.querySelector('.profile__avatar-image');
 const buttonsClosePopup = document.querySelectorAll('.popup__close-btn');
 const btnAddCard = document.querySelector('.profile__btn_type_add');
@@ -48,8 +60,9 @@ const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
-/*-----------------------*/ 
+/*-----------------------*/
 const api = new Api(configApi);
+
 const profile = new UserInfo(
   nameProfile,
   aboutProfile,
@@ -57,33 +70,64 @@ const profile = new UserInfo(
 )
 
 Promise.all([
-  api.getUser(), 
+  api.getUser(),
   api.getCards()])
-.then(([user, cards])=>{
-  profile.setUserInfo(user);
-  const defaultCardList = new Section(
-    {
-      items: cards,
-      render: (item) => {
-        const card = new Card(item, '.cards', user);
+  .then(([user, cards]) => {
+    profile.setUserInfo(user);
+    idProfile.id = user._id;
+    const defaultCardList = new Section(
+      {
+        items: cards,
+        render: (item) => {
+          const card = new Card(item, idProfile, cardTemplateSelector);
           const cardElement = card.generate();
           defaultCardList.setItem(cardElement);
-       }
-    }, selectorPublications);
-    
+        }
+      }, selectorPublications);
+
     defaultCardList.renderItems();
-  
-})
-.catch((err) => {
-  console.error(err);
-})
+
+  })
+  .catch((err) => {
+    console.error(err);
+  })
 
 
-const idProfile = {};
+
+const popupWithImage = new PopupWithImage(PopupWithImageSelector)
+
+const createCard = (dataCard) => {
+  const card = new Card(dataCard, idProfile, cardTemplateSelector, {
+    handleCardClick: (dataImage) => popupWithImage.open(dataImage),
+    deleteCardServer: deleteCardServer(card),
+    addLike: addLikeServer(card),
+    removeLike: removeLikeServer(card)
+  })
+  return card
+}
 
 
+const deleteCardServer = (card) => {
+  api.deleteCard(card.getIdCard())
+    .then(() => card.deleteCard())
+    .catch(err => console.log(err))
+};
+
+
+const addLikeServer = (card) => {
+  api.likeCards(card.getIdCard())
+    .then((res) => { card.indicateLike(res) }) // функция обработки лайка
+    .catch(err => console.log(err))
+
+}
+
+const removeLikeServer = (card) => {
+  api.deleteLikeCards(card.getIdCard())
+    .then((res) => { card.indicateLike(res) }) // функция обработки лайка
+    .catch(err => console.log(err))
+}
 // const fillInIdProfile = (id) => idProfile._id = id;
- 
+
 
 // function initiateProfile() {   // : загрузка данных профиля
 //   getDataProfile()
@@ -95,7 +139,7 @@ const idProfile = {};
 //   }
 /*
 api.getCards(cards)
-  .then((cards) => { 
+  .then((cards) => {
     const defaultCardList = new Section({
       items: cards,
       render: (item) => {
@@ -111,7 +155,7 @@ api.getCards(cards)
     console.error(err);
   })
 /*
- 
+
 /**------------------------- */
 
 /*
@@ -120,7 +164,7 @@ api.getCards(cards)
 
 
 Promise.all([
-  getUser(), 
+  getUser(),
   getCards()])
 .then(([user, card])=>{
   nameProfile.textContent = user.name;
@@ -130,7 +174,7 @@ Promise.all([
   nameProfile.dataset.id = user._id;
   card.forEach(newCard => {
     publications.append(createCard(newCard));
-   }) 
+   })
 })
 .catch((err) => {
   console.error(err);
@@ -241,7 +285,7 @@ function renderLoading(isLoading){
       loader.classList.add('loader_visible');
 
     })
-   
+
   } else {
     content.forEach((content) => {
       content.classList.remove('loader_hidden');
