@@ -8,7 +8,7 @@
 // import { configApi, selectorPublications, nameProfile, aboutProfile, avatarProfile } from "./constanst.js";
 // import SubmitForm from './SubmitForm';
 // import UserInfo from './UserInfo';
-/*-----------------------*/ 
+/*-----------------------*/
 import '../pages/index.css';
 import Api from "./Api.js";
 import Section from './Section.js'
@@ -59,8 +59,8 @@ Promise.all([
       {
         items: cards,
         render: (item) => {
-          const card =  createCard(item, idProfile);
-          const cardElement = card.generate();  
+          const card = createCard(item, idProfile);
+          const cardElement = card.generate();
           defaultCardList.setItem(cardElement);
         }
       }, selectorPublications);
@@ -77,28 +77,27 @@ Promise.all([
 const popupWithImage = new PopupWithImage(popupWithImageSelector)
 
 const createCard = (dataCard, idProfile) => {
-  const card = new Card(dataCard, idProfile, cardTemplateSelector, 
+  const card = new Card(dataCard, idProfile, cardTemplateSelector,
     {
-  //   handleCardClick: (dataImage) => popupWithImage.open(dataImage),
-  //   deleteCardServer: deleteCardServer(card),
-    addLike: ()=>{
-      console.log(11)
-      api.likeCards(card.getIdCard())
-      .then((res) => { 
-        card.indicateLike(res) }) // функция обработки лайка
-      .catch(err => console.log(err))
-  
-    },
-     removeLike: ()=>{
-      console.log(22)
-      api.deleteLikeCards(card.getIdCard())
+      //   handleCardClick: (dataImage) => popupWithImage.open(dataImage),
+      //   deleteCardServer: deleteCardServer(card),
+      addLike: () => {
+        api.likeCards(card.getIdCard())
+          .then((res) => {
+            card.indicateLike(res)
+          }) // функция обработки лайка
+          .catch(err => console.log(err))
+      },
+      removeLike: () => {
+        api.deleteLikeCards(card.getIdCard())
           .then((res) => { card.indicateLike(res) }) // функция обработки лайка
           .catch(err => console.log(err))
-     }
-  }
+      }
+    }
   )
   return card
 }
+
 
 
 const deleteCardServer = (card) => {
@@ -109,7 +108,7 @@ const deleteCardServer = (card) => {
 
 
 // const addLikeServer = (card) => {
- 
+
 // }
 
 // const removeLikeServer = (card) => {
@@ -120,7 +119,7 @@ const deleteCardServer = (card) => {
 
 
 // const fillInIdProfile = (id) => idProfile._id = id;
- 
+
 
 // function initiateProfile() {   // : загрузка данных профиля
 //   getDataProfile()
@@ -132,7 +131,7 @@ const deleteCardServer = (card) => {
 //   }
 /*
 api.getCards(cards)
-  .then((cards) => { 
+  .then((cards) => {
     const defaultCardList = new Section({
       items: cards,
       render: (item) => {
@@ -148,7 +147,7 @@ api.getCards(cards)
     console.error(err);
   })
 /*
- 
+
 /**------------------------- */
 
 /*
@@ -157,7 +156,7 @@ api.getCards(cards)
 
 
 Promise.all([
-  getUser(), 
+  getUser(),
   getCards()])
 .then(([user, card])=>{
   nameProfile.textContent = user.name;
@@ -167,7 +166,7 @@ Promise.all([
   nameProfile.dataset.id = user._id;
   card.forEach(newCard => {
     publications.append(createCard(newCard));
-   }) 
+   })
 })
 .catch((err) => {
   console.error(err);
@@ -278,7 +277,7 @@ function renderLoading(isLoading){
       loader.classList.add('loader_visible');
 
     })
-   
+
   } else {
     content.forEach((content) => {
       content.classList.remove('loader_hidden');
