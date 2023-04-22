@@ -3,7 +3,8 @@
 //import { formCards, nameInputCard, imageInputCard, publications, createCard } from "./Card.js";
 //import { enableValidation, config, resetError} from "./validate.js";
 // import { getUser, getCards, patchUser, postCard, avatarProfile } from "./Api.js";
-//import { nameProfile, aboutProfile } from "./utils.js";
+
+
 import '../pages/index.css';
 import Api from "./Api.js";
 import Section from './Section.js'
@@ -17,21 +18,23 @@ import {
   avatarProfile,
   idProfile,
   cardTemplateSelector,
-  PopupWithImageSelector
+  popupWithImageSelector
 } from "./constanst.js";
 
 import SubmitForm from './SubmitForm';
-import UserInfo from './UserInfo';
-import PopupWithImage from './PopupWithImage';
-const imageAvatar = document.querySelector('.profile__avatar-image');
-const buttonsClosePopup = document.querySelectorAll('.popup__close-btn');
-const btnAddCard = document.querySelector('.profile__btn_type_add');
-const btnEditProfile = document.querySelector('.profile__btn_type_edit');
-const addCardPopup = document.getElementById('popup_add');
-const profileAvatarPopup = document.getElementById('avatar');
-const buttonSumbit = document.getElementById('submitCard');
-const nameInput = document.querySelector('.popup__input[name="name"]');
-const jobInput = document.querySelector('.popup__input[name="job"]');
+import UserInfo from './UserInfo.js';
+import PopupWithImage from './PopupWithImage.js';
+
+// const imageAvatar = document.querySelector('.profile__avatar-image');
+// const buttonsClosePopup = document.querySelectorAll('.popup__close-btn');
+// const btnAddCard = document.querySelector('.profile__btn_type_add');
+// const btnEditProfile = document.querySelector('.profile__btn_type_edit');
+// const addCardPopup = document.getElementById('popup_add');
+// const profileAvatarPopup = document.getElementById('avatar');
+// const buttonSumbit = document.getElementById('submitCard');
+
+// const nameInput = document.querySelector('.popup__input[name="name"]');
+// const jobInput = document.querySelector('.popup__input[name="job"]');
 const avatarInput = document.querySelector('.popup__input[name="avatar"]');
 const btnProfileAvatarPopup = document.querySelector('.profile__avatar');
 const initialCards = [
@@ -60,7 +63,7 @@ const initialCards = [
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
   }
 ];
-/*-----------------------*/
+
 const api = new Api(configApi);
 
 const profile = new UserInfo(
@@ -94,7 +97,7 @@ Promise.all([
 
 
 
-const popupWithImage = new PopupWithImage(PopupWithImageSelector)
+const popupWithImage = new PopupWithImage(popupWithImageSelector)
 
 const createCard = (dataCard) => {
   const card = new Card(dataCard, idProfile, cardTemplateSelector, {

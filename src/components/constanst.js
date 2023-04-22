@@ -7,16 +7,17 @@ export const configApi = {
 }
 
 export const selectorPublications = '.publications';
-const nameInput = document.querySelector('.popup__input[name="name"]');
-const jobInput = document.querySelector('.popup__input[name="job"]');
+
 export const nameProfile = document.querySelector('.profile__name');
 export const aboutProfile = document.querySelector('.profile__about');
 export const avatarProfile = document.querySelector('.profile__avatar');
 
-// константы попапа
-export const document = document.querySelector('.page');
-export const PopupWithImageSelector = '.popup_image'
+export const popupWithImageSelector = 'popup_image';
 
-// id профиля
-export const idProfile = {};
+export const idProfile = {}; // id профиля
 export const cardTemplateSelector = document.querySelector('.cards')
+
+
+// const nameInput = document.querySelector('.popup__input[name="name"]');
+// const jobInput = document.querySelector('.popup__input[name="job"]');
+

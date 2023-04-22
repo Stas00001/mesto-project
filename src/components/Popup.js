@@ -1,6 +1,6 @@
-import { document } from "./constanst";
 export default class Popup {
   constructor(popupSelector) {
+    this._popupSelector = popupSelector;
     this._popup = document.querySelector(popupSelector);
     this._closeButton = this._popup.querySelector('.popup__close-btn')
   }
@@ -27,12 +27,12 @@ export default class Popup {
 
   _setListenerOnEscape() {
     document.addEventListener('keydown', this._handleEscClose);
-    this._closeButton.addEventListener('click', this.close);
+    this._closeButton.addEventListener('click', this.close());
   }
 
   _removeListenerOnEscape() {
     document.removeEventListener('keydown', this._handleEscClose);
-    this._closeButton.removeEventListener('click', this.close);
+    this._closeButton.removeEventListener('click', this.close());
   }
 }
 
@@ -41,9 +41,7 @@ export default class Popup {
 
 
 
-const setListenerOnEscape = () => document.addEventListener('keydown', closeOpenedPopupByEsc);
-const removeListenerOnEscape = () => document.removeEventListener('keydown', closeOpenedPopupByEsc);
+// const setListenerOnEscape = () => document.addEventListener('keydown', closeOpenedPopupByEsc);
+// const removeListenerOnEscape = () => document.removeEventListener('keydown', closeOpenedPopupByEsc);
 
-class editPopup extends Popup {
 
-}

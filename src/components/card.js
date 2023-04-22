@@ -1,6 +1,6 @@
-import { popupOpen, popupCardImage, popupText, popupImage } from "./modal.js";
-import { deleteCard, deleteLikeCards, likeCards } from "./Api.js";
-import { nameProfile, aboutProfile } from "./utils.js";
+// import { popupOpen, popupCardImage, popupText, popupImage } from "./modal.js";
+// import { deleteCard, deleteLikeCards, likeCards } from "./Api.js";
+// import { nameProfile, aboutProfile } from "./utils.js";
 //export {formCards, nameInputCard, imageInputCard, publications, createCard};
 // const formCards = document.querySelector('.popup__form[name="cards"]');
 // const nameInputCard = formCards.querySelector('.popup__input[name="nameCards"]');
@@ -54,7 +54,6 @@ export default class Card {
     return this._element
   }
 
-  // : ---------------------------------------------------------------------------------
 
   _setEventListeners() {
     this._element.querySelector('.publications__btnlike').addEventListener('click', () => this._handleLikeCard);
