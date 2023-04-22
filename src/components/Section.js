@@ -17,5 +17,4 @@ export default class Section {
 }
 
 
-const sectionPublicationSelector = '.publications'
 
