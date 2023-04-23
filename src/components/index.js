@@ -23,7 +23,7 @@ import {
   buttonEditProfile,
   buttonEditAvatar,
   buttonAddCard
-} from "./constanst.js";
+} from "../utils/constanst.js";
 
 import SubmitForm from './SubmitForm';
 import UserInfo from './UserInfo.js';
