@@ -3,6 +3,7 @@ export default class UserInfo {
     this._name = name;
     this._about = about;
     this._avatar = avatar;
+
   }
 
   getUserInfo() {

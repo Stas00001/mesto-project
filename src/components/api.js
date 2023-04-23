@@ -1,5 +1,3 @@
-//export {configApi, getRespome, getUser, getCards, patchUser, postCard, deleteCard, likeCards, deleteLikeCards, avatarProfile};
-
 export default class Api {
   constructor(data) {
     this._baseUrl = data.baseUrl
@@ -73,7 +71,7 @@ export default class Api {
     })
       .then(this.getRespome);
   }
-}
+};
 
 
 
