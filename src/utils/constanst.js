@@ -4,7 +4,18 @@ export const configApi = {
     authorization: 'a06d07f4-0395-4028-bda1-ecc0fed6969d',
     'Content-Type': 'application/json',
   }
-}
+};
+
+export const configValidator = {
+  formSelector: '.form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__save-btn',
+  inactiveButtonClass: 'popup__save-btn_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active',
+};
+
+export const popupsList = [...document.querySelectorAll('.popup-validation')]
 
 export const selectorPublications = '.publications';
 

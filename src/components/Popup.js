@@ -47,7 +47,7 @@ export default class Popup {
     this._popup.removeEventListener('click', this._handleClickOverley);
 
   }
-}
+};
 
 
 
