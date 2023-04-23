@@ -1,5 +1,4 @@
 import Popup from "./Popup";
-
 export default class PopupWithImage extends Popup {
   constructor(popupSelector) {
     super(popupSelector);
@@ -8,8 +7,8 @@ export default class PopupWithImage extends Popup {
   }
 
   open(dataImage) { // передать сюда переменную с данными при клике по картинке
-    this._image = dataImage.link;
-    this._capture = dataImage.name;
+    this._image.src = dataImage.link;
+    this._capture.textContent = dataImage.name;
     super.open();
   }
 }

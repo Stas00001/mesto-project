@@ -1,8 +1,10 @@
 export default class Card {
   constructor(data, idProfile, selector,
     {
-      //  handleCardClick, deleteCardServer,
-      addLike, removeLike
+      handleCardClick,
+      // deleteCardServer,
+      addLike,
+      removeLike
     }
   ) {
     this._data = data;
@@ -15,7 +17,7 @@ export default class Card {
     this._addLike = addLike; // функция лайка
     this._removeLike = removeLike;
     // this._deleteCard = deleteCardServer; // функция удалени
-    // this._openPopupImage = handleCardClick; // функция открытия попапа с изображением
+    this._openPopupImage = handleCardClick; // функция открытия попапа с изображением
 
   }
 
@@ -49,7 +51,7 @@ export default class Card {
   _setEventListeners() {
     this._element.querySelector('.publications__btnlike').addEventListener('click', () => this._handleLikeCard());
     // this._element.querySelector('.publications__btndelete').addEventListener('click', () => this._deleteCard);
-    // this._element.querySelector('.popup_image').addEventListener('click', () => this._openPopupImage({ name: this._name, link: this._image }));
+    this._element.querySelector('.publications__image').addEventListener('click', () => this._openPopupImage({ name: this._name, link: this._image }));
   }
 
   deleteCard() {
