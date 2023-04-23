@@ -1,18 +1,7 @@
-//export {nameProfile, aboutProfile};
-//import { popupClose, popupOpen, formProfile, popupProfile, formAvatar } from "./modal.js";
-//import { formCards, nameInputCard, imageInputCard, publications, createCard } from "./Card.js";
-//import { enableValidation, config, resetError} from "./validate.js";
-// import { getUser, getCards, patchUser, postCard, avatarProfile } from "./Api.js";
-//import { nameProfile, aboutProfile } from "./utils.js";
-// import '../pages/index.css';
-// import { configApi, selectorPublications, nameProfile, aboutProfile, avatarProfile } from "./constanst.js";
-// import SubmitForm from './SubmitForm';
-// import UserInfo from './UserInfo';
-/*-----------------------*/
 import '../pages/index.css';
 import Api from "./Api.js";
 import Section from './Section.js'
-import Card from './card.js';
+import Card from './Card.js';
 import PopupWithForm from './PopupWithForm';
 
 import {
@@ -27,25 +16,18 @@ import {
   cardTemplateSelector,
   popupWithImageSelector,
   popupEditProfileSelector,
+  popupEditAvatarSelector,
+  popupAddCardSelector,
 
   // : кнопки
-  buttonEditProfile
+  buttonEditProfile,
+  buttonEditAvatar,
+  buttonAddCard
 } from "./constanst.js";
 
 import SubmitForm from './SubmitForm';
 import UserInfo from './UserInfo.js';
 import PopupWithImage from './PopupWithImage.js';
-
-// const imageAvatar = document.querySelector('.profile__avatar-image');
-// const buttonsClosePopup = document.querySelectorAll('.popup__close-btn');
-// const btnAddCard = document.querySelector('.profile__btn_type_add');
-// const btnEditProfile = document.querySelector('.profile__btn_type_edit');
-// const addCardPopup = document.getElementById('popup_add');
-// const profileAvatarPopup = document.getElementById('avatar');
-// const buttonSumbit = document.getElementById('submitCard');
-
-// const nameInput = document.querySelector('.popup__input[name="name"]');
-// const jobInput = document.querySelector('.popup__input[name="job"]');
 
 
 const api = new Api(configApi);
@@ -57,37 +39,53 @@ const profile = new UserInfo(
 )
 
 Promise.all([
-  api.getUser(),
-  api.getCards()])
+  api.getUser()
+])
   .then(([user, cards]) => {
     profile.setUserInfo(user);
     idProfile.id = user._id;
-    const defaultCardList = new Section(
-      {
-        items: cards,
-        render: (item) => {
-          const card = createCard(item, idProfile);
-          const cardElement = card.generate();
-          defaultCardList.setItem(cardElement);
-        }
-      }, selectorPublications);
+    return idProfile.id !== undefined
 
-    defaultCardList.renderItems();
+  })
+  .then((res) => {
+    !res
+      ? console.log(`ERROR: ID Profile - ${idProfile._id}.`)
+      : api.getCards()
+        .then((res) => { cardsSection.renderItems(res) })
+        .catch()
 
   })
   .catch((err) => {
     console.error(err);
-  })
+  });
+
+
+
+const cardsSection = new Section(
+  {
+    render: (item) => {
+      const card = createCard(item, idProfile);
+      const cardElement = card.generate();
+      return cardElement
+    }
+  }, selectorPublications);
+
+
+
+
+
 
 
 
 const popupWithImage = new PopupWithImage(popupWithImageSelector)
 
+
+
+
 const createCard = (dataCard, idProfile) => {
   const card = new Card(dataCard, idProfile, cardTemplateSelector,
     {
       handleCardClick: (dataImage) => popupWithImage.open(dataImage),
-      //   deleteCardServer: deleteCardServer(card),
       addLike: () => {
         api.likeCards(card.getIdCard())
           .then((res) => {
@@ -99,21 +97,18 @@ const createCard = (dataCard, idProfile) => {
         api.deleteLikeCards(card.getIdCard())
           .then((res) => { card.indicateLike(res) })
           .catch(err => console.log(err))
+      },
+      deleteCardServer: () => {
+        api.deleteCard(card.getIdCard())
+          .then(() => card.deleteCard())
+          .catch(err => console.log(err))
       }
     }
   )
   return card
-}
-
-
-
-const deleteCardServer = (card) => {
-  api.deleteCard(card.getIdCard())
-    .then(() => card.deleteCard())
-    .catch(err => console.log(err))
 };
 
-
+// : функционал редактирования профиля
 const popupEditProfile = new PopupWithForm(
   {
     callback: (data) => {
@@ -138,12 +133,62 @@ const fillInProfileForm = () => {
 };
 
 
-buttonEditProfile.addEventListener('click', () => {
+
+// : функционал редактирования автврв
+const popupEditAvatar = new PopupWithForm(
+  {
+    callback: (data) => {
+      popupEditProfile.setTextSaveButton(true)
+      api
+        .avatarProfile(data)
+        .then((res) => { profile.setUserInfo(res) })
+        .catch(err => console.log(err))
+        .finally(() => {
+          popupEditProfile.setTextSaveButton(false)
+        })
+      popupEditAvatar.close()
+    }
+  },
+  popupEditAvatarSelector
+)
+
+
+
+const popupAddCard = new PopupWithForm({
+  callback: (data) => {
+    popupEditProfile.setTextSaveButton(true)
+    api
+      .postCard(data)
+      .then((res) => {
+        cardsSection.setItem(res);
+        popupAddCard.close();
+      })
+      .catch()
+      .finally(() => popupEditProfile.setTextSaveButton(false))
+  }
+},
+  popupAddCardSelector
+)
+
+buttonAddCard.addEventListener('click', () => {
+  console.log(1);
+  popupAddCard.open()
+})
+
+
+
+
+// : Слушатели на кнопки
+
+buttonEditProfile.addEventListener('click', () => {  // редактирование профиля
   // : подготовка формы
   fillInProfileForm(),
     popupEditProfile.open()
 })
 
+buttonEditAvatar.addEventListener('click', () => { // редактирование аватара
+  popupEditAvatar.open()
+});
 
 // const addLikeServer = (card) => {
 
@@ -170,15 +215,15 @@ buttonEditProfile.addEventListener('click', () => {
 /*
 api.getCards(cards)
   .then((cards) => {
-    const defaultCardList = new Section({
+    const cardsSection = new Section({
       items: cards,
       render: (item) => {
         const card = new Card(item, '.cards');
           const cardElement = card.generate();
-          defaultCardList.setItem(cardElement);
+          cardsSection.setItem(cardElement);
        }
     },cardSelector);
-    defaultCardList.renderItems();
+    cardsSection.renderItems();
 
   })
   .catch((err) => {

@@ -10,16 +10,20 @@ export const selectorPublications = '.publications';
 
 export const nameProfile = document.querySelector('.profile__name');
 export const aboutProfile = document.querySelector('.profile__about');
-export const avatarProfile = document.querySelector('.profile__avatar');
+export const avatarProfile = document.querySelector('.profile__avatar-image');
 
 export const nameEditForm = document.getElementById('name-input');
 export const aboutEditForm = document.getElementById('about-input');
 
 export const popupWithImageSelector = '.popup-image';
-export const popupEditProfileSelector = '.popup-edit-profile'
+export const popupEditProfileSelector = '.popup-edit-profile';
+export const popupEditAvatarSelector = '.popup-edit-avatar'
+export const popupAddCardSelector = '.popup-add-card'
 
 export const idProfile = {}; // id профиля
 export const cardTemplateSelector = '.cards'
 
 // : Кнопки
 export const buttonEditProfile = document.querySelector('.profile__btn_type_edit');
+export const buttonEditAvatar = document.querySelector('.profile__button-edit-avatar');
+export const buttonAddCard = document.querySelector('.profile__button-add-card');
