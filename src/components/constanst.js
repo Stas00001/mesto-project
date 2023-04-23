@@ -12,7 +12,14 @@ export const nameProfile = document.querySelector('.profile__name');
 export const aboutProfile = document.querySelector('.profile__about');
 export const avatarProfile = document.querySelector('.profile__avatar');
 
-export const popupWithImageSelector = '.popup_image';
+export const nameEditForm = document.getElementById('name-input');
+export const aboutEditForm = document.getElementById('about-input');
+
+export const popupWithImageSelector = '.popup-image';
+export const popupEditProfileSelector = '.popup-edit-profile'
 
 export const idProfile = {}; // id профиля
 export const cardTemplateSelector = '.cards'
+
+// : Кнопки
+export const buttonEditProfile = document.querySelector('.profile__btn_type_edit');

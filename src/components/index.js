@@ -13,6 +13,7 @@ import '../pages/index.css';
 import Api from "./Api.js";
 import Section from './Section.js'
 import Card from './card.js';
+import PopupWithForm from './PopupWithForm';
 
 import {
   configApi,
@@ -20,9 +21,15 @@ import {
   nameProfile,
   aboutProfile,
   avatarProfile,
+  nameEditForm,
+  aboutEditForm,
   idProfile,
   cardTemplateSelector,
-  popupWithImageSelector
+  popupWithImageSelector,
+  popupEditProfileSelector,
+
+  // : кнопки
+  buttonEditProfile
 } from "./constanst.js";
 
 import SubmitForm from './SubmitForm';
@@ -85,12 +92,12 @@ const createCard = (dataCard, idProfile) => {
         api.likeCards(card.getIdCard())
           .then((res) => {
             card.indicateLike(res)
-          }) // функция обработки лайка
+          })
           .catch(err => console.log(err))
       },
       removeLike: () => {
         api.deleteLikeCards(card.getIdCard())
-          .then((res) => { card.indicateLike(res) }) // функция обработки лайка
+          .then((res) => { card.indicateLike(res) })
           .catch(err => console.log(err))
       }
     }
@@ -105,6 +112,37 @@ const deleteCardServer = (card) => {
     .then(() => card.deleteCard())
     .catch(err => console.log(err))
 };
+
+
+const popupEditProfile = new PopupWithForm(
+  {
+    callback: (data) => {
+      popupEditProfile.setTextSaveButton(true)
+      api
+        .patchUser({ name: data.name, about: data.about })
+        .then((res) => profile.setUserInfo(res))
+        .catch(err => console.log(err))
+        .finally(() => {
+          popupEditProfile.setTextSaveButton(false)
+        })
+      popupEditProfile.close()
+    }
+  },
+  popupEditProfileSelector
+);
+
+const fillInProfileForm = () => {
+  const dataProfile = profile.getUserInfo();
+  nameEditForm.value = dataProfile.name;
+  aboutEditForm.value = dataProfile.about;
+};
+
+
+buttonEditProfile.addEventListener('click', () => {
+  // : подготовка формы
+  fillInProfileForm(),
+    popupEditProfile.open()
+})
 
 
 // const addLikeServer = (card) => {
