@@ -79,7 +79,7 @@ const popupWithImage = new PopupWithImage(popupWithImageSelector)
 const createCard = (dataCard, idProfile) => {
   const card = new Card(dataCard, idProfile, cardTemplateSelector,
     {
-      //   handleCardClick: (dataImage) => popupWithImage.open(dataImage),
+      handleCardClick: (dataImage) => popupWithImage.open(dataImage),
       //   deleteCardServer: deleteCardServer(card),
       addLike: () => {
         api.likeCards(card.getIdCard())
