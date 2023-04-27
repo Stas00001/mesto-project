@@ -8,6 +8,7 @@ export default class PopupWithImage extends Popup {
 
   open(dataImage) { // передать сюда переменную с данными при клике по картинке
     this._image.src = dataImage.link;
+    this._image.alt = dataImage.name;
     this._capture.textContent = dataImage.name;
     super.open();
   }

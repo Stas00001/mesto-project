@@ -1,7 +1,7 @@
 import '../pages/index.css';
 import Api from "./Api.js";
 import Section from './Section.js'
-import Card from './Card.js';
+import Card from './Card';
 import PopupWithForm from './PopupWithForm';
 import FormValidator from './FormValidator';
 import UserInfo from './UserInfo.js';
@@ -17,8 +17,8 @@ import {
   nameEditForm,
   aboutEditForm,
   idProfile,
-  // : массив попапов
-  popupsList,
+  // : массив форм
+  formsList,
   // : селекторы
   cardTemplateSelector,
   popupWithImageSelector,
@@ -44,21 +44,13 @@ const profile = new UserInfo(
 )
 
 Promise.all([
-  api.getUser()
+  api.getUser(),
+    api.getCards()
 ])
   .then(([user, cards]) => {
     profile.setUserInfo(user);
     idProfile.id = user._id;
-    return idProfile.id !== undefined
-
-  })
-  .then((res) => {
-    !res
-      ? console.log(`ERROR: ID Profile - ${idProfile._id}.`)
-      : api.getCards()
-        .then((res) => { cardsSection.renderItems(res) })
-        .catch()
-
+    cardsSection.renderItems(cards);
   })
   .catch((err) => {
     console.error(err);
@@ -167,11 +159,11 @@ const popupAddCard = new PopupWithForm({
 
 // : валидация полей ввода
 const initiateValidation = (element) => {
-  const popupFormValidator = new FormValidator(configValidator, element)
-  popupFormValidator.enableValidation()
+  const formValidator = new FormValidator(configValidator, element)
+  formValidator.enableValidation()
 };
 
-popupsList.forEach(element => initiateValidation(element));
+formsList.forEach(element => initiateValidation(element));
 
 
 // : Слушатели на кнопки

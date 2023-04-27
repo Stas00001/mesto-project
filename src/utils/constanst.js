@@ -15,7 +15,7 @@ export const configValidator = {
   errorClass: 'popup__input-error_active',
 };
 
-export const popupsList = [...document.querySelectorAll('.popup-validation')]
+export const formsList = [...document.querySelectorAll('.form')];
 
 export const selectorPublications = '.publications';
 
@@ -26,7 +26,7 @@ export const avatarProfile = document.querySelector('.profile__avatar-image');
 export const nameEditForm = document.getElementById('name-input');
 export const aboutEditForm = document.getElementById('about-input');
 
-export const popupWithImageSelector = '.popup-image';
+export const popupWithImageSelector = '.popup__image';
 export const popupEditProfileSelector = '.popup-edit-profile';
 export const popupEditAvatarSelector = '.popup-edit-avatar'
 export const popupAddCardSelector = '.popup-add-card'
