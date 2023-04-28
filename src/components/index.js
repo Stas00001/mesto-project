@@ -50,7 +50,7 @@ Promise.all([
   .then(([user, cards]) => {
     profile.setUserInfo(user);
     idProfile.id = user._id;
-    cardsSection.renderItems(cards);
+    cardsSection.renderItemsDefault(cards);
   })
   .catch((err) => {
     console.error(err);
@@ -103,14 +103,16 @@ const popupEditProfile = new PopupWithForm(
   {
     callback: (data) => {
       popupEditProfile.setTextSaveButton(true)
-      api
-        .patchUser({ name: data.name, about: data.about })
-        .then((res) => profile.setUserInfo(res))
+      api.patchUser({ name: data.name, about: data.about })
+        .then((res) => {
+          profile.setUserInfo(res);
+          popupEditProfile.close()
+        }
+        )
         .catch(err => console.log(err))
         .finally(() => {
           popupEditProfile.setTextSaveButton(false)
         })
-      popupEditProfile.close()
     }
   },
   popupEditProfileSelector
@@ -129,12 +131,14 @@ const popupEditAvatar = new PopupWithForm(
       popupEditProfile.setTextSaveButton(true)
       api
         .avatarProfile(data)
-        .then((res) => { profile.setUserInfo(res) })
+        .then((res) => { 
+          profile.setUserInfo(res) 
+          popupEditAvatar.close();
+        })
         .catch(err => console.log(err))
         .finally(() => {
           popupEditProfile.setTextSaveButton(false)
         })
-      popupEditAvatar.close()
     }
   },
   popupEditAvatarSelector

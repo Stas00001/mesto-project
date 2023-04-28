@@ -8,9 +8,20 @@ export default class Section {
     this._container.prepend(this._renderer(element));
   }
 
+  setItemDefault(element) {
+    this._container.append(this._renderer(element));
+
+  }
+
   renderItems(cards) {
     cards.forEach(item => {
       this.setItem(item);
+    });
+  }
+
+  renderItemsDefault(cards) {
+    cards.forEach(item => {
+      this.setItemDefault(item);
     });
   }
 }
