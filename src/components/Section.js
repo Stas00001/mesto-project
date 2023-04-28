@@ -14,11 +14,11 @@ export default class Section {
   }
 
   renderItems(cards) {
-    cards.forEach(item => {
-      this.setItem(item);
-    });
+    cards.reduceRight((_, item) => {
+      this.setItem(item)
+    }, null)
   }
-
+  
   renderItemsDefault(cards) {
     cards.forEach(item => {
       this.setItemDefault(item);

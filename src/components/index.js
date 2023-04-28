@@ -50,7 +50,7 @@ Promise.all([
   .then(([user, cards]) => {
     profile.setUserInfo(user);
     idProfile.id = user._id;
-    cardsSection.renderItemsDefault(cards);
+    cardsSection.renderItems(cards);
   })
   .catch((err) => {
     console.error(err);
