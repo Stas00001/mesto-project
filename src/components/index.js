@@ -1,154 +1,187 @@
-export {nameProfile, aboutProfile};
-import { popupClose, popupOpen, formProfile, popupProfile, formAvatar } from "./modal.js";
-import { formCards, nameInputCard, imageInputCard, publications, createCard } from "./card.js";
-import { enableValidation, config, resetError} from "./validate.js";
-import { getUser, getCards, patchUser, postCard, avatarProfile } from "./api.js";
-import { nameProfile, aboutProfile } from "./utils.js";
 import '../pages/index.css';
-const imageAvatar = document.querySelector('.profile__avatar-image');
-const buttonsClosePopup = document.querySelectorAll('.popup__close-btn');
-const btnAddCard = document.querySelector('.profile__btn_type_add');
-const btnEditProfile = document.querySelector('.profile__btn_type_edit');
-const addCardPopup = document.getElementById('popup_add');
-const profileAvatarPopup = document.getElementById('avatar');
-const buttonSumbit = document.getElementById('submitCard');
-const nameInput = document.querySelector('.popup__input[name="name"]');
-const jobInput = document.querySelector('.popup__input[name="job"]');
-const avatarInput = document.querySelector('.popup__input[name="avatar"]');
-const btnProfileAvatarPopup = document.querySelector('.profile__avatar');
+import Api from "./Api.js";
+import Section from './Section.js'
+import Card from './Card';
+import PopupWithForm from './PopupWithForm';
+import FormValidator from './FormValidator';
+import UserInfo from './UserInfo.js';
+import PopupWithImage from './PopupWithImage.js';
+
+import {
+  configApi,
+  configValidator,
+  selectorPublications,
+  nameProfile,
+  aboutProfile,
+  avatarProfile,
+  nameEditForm,
+  aboutEditForm,
+  idProfile,
+  // : массив форм
+  formsList,
+  // : селекторы
+  cardTemplateSelector,
+  popupWithImageSelector,
+  popupEditProfileSelector,
+  popupEditAvatarSelector,
+  popupAddCardSelector,
+
+  // : кнопки
+  buttonEditProfile,
+  buttonEditAvatar,
+  buttonAddCard
+} from "../utils/constanst.js";
+
+
+
+
+const api = new Api(configApi);
+
+const profile = new UserInfo(
+  nameProfile,
+  aboutProfile,
+  avatarProfile
+)
 
 Promise.all([
-  getUser(), 
-  getCards()])
-.then(([user, card])=>{
-  nameProfile.textContent = user.name;
-  aboutProfile.textContent = user.about;
-  imageAvatar.src = user.avatar;
-  nameProfile.dataset.edited = true;
-  nameProfile.dataset.id = user._id;
-  card.forEach(newCard => {
-    publications.append(createCard(newCard));
-   }) 
-})
-.catch((err) => {
-  console.error(err);
-})
-
-
-buttonsClosePopup.forEach(button => {
-  button.addEventListener('click', function (evt) {
-    popupClose(evt.currentTarget.closest('.popup'));
-  })
-});
-
-btnAddCard.addEventListener('click', function (evt) {
-  resetError(formCards, config)
-  popupOpen(addCardPopup);
-});
-
-btnEditProfile.addEventListener('click', function (evt) {
-  resetError(formProfile, config)
-  popupOpen(popupProfile);
-  getUserInfo(nameProfile, aboutProfile);
-});
-
-btnProfileAvatarPopup.addEventListener('click', function(evt) {
-  evt.preventDefault();
-  popupOpen(profileAvatarPopup);
-});
-
-function getUserInfo (nameProfileValue, aboutProfileValue ){
-  nameInput.value = nameProfileValue.textContent;;
-  jobInput.value = aboutProfileValue.textContent;;
-}
-
-function handleFormSubmitProfile(evt) {
-  evt.preventDefault();
-  renderLoading(true);
-  patchUser({name: nameInput.value, about: jobInput.value})
-  .then((dataUpdateUser) => {
-    nameProfile.textContent = dataUpdateUser.name;
-    aboutProfile.textContent = dataUpdateUser.about;
-  })
-  .then(() => {
-    formProfile.reset();
-    popupClose(popupProfile);
-  })
-  .finally(() => {
-    renderLoading(false);
+  api.getUser(),
+    api.getCards()
+])
+  .then(([user, cards]) => {
+    profile.setUserInfo(user);
+    idProfile.id = user._id;
+    cardsSection.renderItems(cards);
   })
   .catch((err) => {
     console.error(err);
-  })
+  });
+
+
+
+const cardsSection = new Section(
+  {
+    render: (item) => {
+      const card = createCard(item, idProfile);
+      const cardElement = card.generate();
+      return cardElement
+    }
+  },
+  selectorPublications);
+
+
+const createCard = (dataCard, idProfile) => {
+  const card = new Card(dataCard, idProfile, cardTemplateSelector,
+    {
+      handleCardClick: (dataImage) => popupWithImage.open(dataImage),
+      addLike: () => {
+        api.likeCards(card.getIdCard())
+          .then((res) => {
+            card.indicateLike(res)
+          })
+          .catch(err => console.log(err))
+      },
+      removeLike: () => {
+        api.deleteLikeCards(card.getIdCard())
+          .then((res) => { card.indicateLike(res) })
+          .catch(err => console.log(err))
+      },
+      deleteCardServer: () => {
+        api.deleteCard(card.getIdCard())
+          .then(() => card.deleteCard())
+          .catch(err => console.log(err))
+      }
+    }
+  )
+  return card
+};
+
+// : попап с изображением
+const popupWithImage = new PopupWithImage(popupWithImageSelector);
+
+// : функционал редактирования профиля
+const popupEditProfile = new PopupWithForm(
+  {
+    callback: (data) => {
+      popupEditProfile.setTextSaveButton(true)
+      api.patchUser({ name: data.name, about: data.about })
+        .then((res) => {
+          profile.setUserInfo(res);
+          popupEditProfile.close()
+        }
+        )
+        .catch(err => console.log(err))
+        .finally(() => {
+          popupEditProfile.setTextSaveButton(false)
+        })
+    }
+  },
+  popupEditProfileSelector
+);
+
+const fillInProfileForm = () => {
+  const dataProfile = profile.getUserInfo()
+  nameEditForm.value = dataProfile.name
+  aboutEditForm.value = dataProfile.about
 }
 
+// : функционал редактирования аватара
+const popupEditAvatar = new PopupWithForm(
+  {
+    callback: (data) => {
+      popupEditProfile.setTextSaveButton(true)
+      api
+        .avatarProfile(data)
+        .then((res) => { 
+          profile.setUserInfo(res) 
+          popupEditAvatar.close();
+        })
+        .catch(err => console.log(err))
+        .finally(() => {
+          popupEditProfile.setTextSaveButton(false)
+        })
+    }
+  },
+  popupEditAvatarSelector
+);
 
-formProfile.addEventListener('submit', handleFormSubmitProfile);
-
-function handleFormSubmitAddCard(evt) {
-  evt.preventDefault();
-  renderLoading(true);
-  postCard({name: nameInputCard.value, link: imageInputCard.value})
-  .then((card)=>{
-    card.name = card.name;
-    card.link = card.link;
-    publications.prepend(createCard(card));
-  })
-  .then(() => {
-    formCards.reset();
-    popupClose(addCardPopup);
-  })
-  .finally(() => {
-    renderLoading(false);
-  })
-  .catch((err) => {
-    console.error(err);
-  })
-}
-
-formCards.addEventListener('submit', handleFormSubmitAddCard);
-
-function handleFormSubmitAvatar(evt) {
-  evt.preventDefault();
-  renderLoading(true);
-  avatarProfile({avatar: avatarInput.value})
-  .then((dataUpdateAvatar)=>{
-    imageAvatar.src = dataUpdateAvatar.avatar
-  })
-  .then(() => {
-    formAvatar.reset();
-    popupClose(profileAvatarPopup);
-  })
-  .finally(() => {
-    renderLoading(false);
-  })
-  .catch((err) => {
-    console.error(err);
-  })
-}
-
-formAvatar.addEventListener('submit', handleFormSubmitAvatar);
-const loader = document.querySelectorAll('.loader')
-const content = document.querySelectorAll('.content');
-function renderLoading(isLoading){
-  if(isLoading ){
-    content.forEach((content) => {
-      content.classList.add('loader_hidden');
-    })
-    loader.forEach((loader) => {
-      loader.classList.add('loader_visible');
-
-    })
-   
-  } else {
-    content.forEach((content) => {
-      content.classList.remove('loader_hidden');
-    })
-    loader.forEach((loader) => {
-      loader.classList.remove('loader_visible');
-
-    })
+// : функционал добавления карточки
+const popupAddCard = new PopupWithForm({
+  callback: (data) => {
+    popupEditProfile.setTextSaveButton(true)
+    api
+      .postCard(data)
+      .then((res) => {
+        cardsSection.setItem(res);
+        popupAddCard.close();
+      })
+      .catch()
+      .finally(() => popupEditProfile.setTextSaveButton(false))
   }
-}
-enableValidation(config);
+},
+  popupAddCardSelector
+)
+
+// : валидация полей ввода
+const initiateValidation = (element) => {
+  const formValidator = new FormValidator(configValidator, element)
+  formValidator.enableValidation()
+};
+
+formsList.forEach(element => initiateValidation(element));
+
+
+// : Слушатели на кнопки
+buttonEditProfile.addEventListener('click', () => {  // редактирование профиля
+  // : подготовка формы
+  fillInProfileForm(),
+    popupEditProfile.open()
+});
+
+buttonEditAvatar.addEventListener('click', () => { // редактирование аватара
+  popupEditAvatar.open()
+});
+
+buttonAddCard.addEventListener('click', () => {
+  popupAddCard.open()
+});
 
